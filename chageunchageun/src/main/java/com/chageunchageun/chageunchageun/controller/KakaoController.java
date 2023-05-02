@@ -1,6 +1,6 @@
 package com.chageunchageun.chageunchageun.controller;
 
-import com.chageunchageun.chageunchageun.dto.KakaoDTO;
+import com.chageunchageun.chageunchageun.data.dto.KakaoDTO;
 import com.chageunchageun.chageunchageun.service.KakaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

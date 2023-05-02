@@ -1,4 +1,4 @@
-package com.chageunchageun.chageunchageun.dto;
+package com.chageunchageun.chageunchageun.data.dto;
 
 public class KakaoDTO {
     private String k_name;

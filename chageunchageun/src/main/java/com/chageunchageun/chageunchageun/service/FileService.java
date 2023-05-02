@@ -1,20 +1,20 @@
 package com.chageunchageun.chageunchageun.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 @Service
 public class FileService {
 
+
+    /**
+     * 클라이언트로부터 이미지를 받아 저장하는 메서드
+     * email을 primary 키로하여
+     * 
+     */
     public void uploadFile (String email, MultipartFile file){
 
         final String uploadDir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/" + email + "/";
@@ -33,6 +33,7 @@ public class FileService {
         }
     }
 
+    //디렉토리 생성 메서드
     public void checkDir(String path){
         File Folder = new File(path);
 

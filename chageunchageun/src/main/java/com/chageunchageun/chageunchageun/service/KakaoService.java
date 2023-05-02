@@ -1,6 +1,6 @@
 package com.chageunchageun.chageunchageun.service;
 
-import com.chageunchageun.chageunchageun.dto.KakaoDTO;
+import com.chageunchageun.chageunchageun.data.dto.KakaoDTO;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
