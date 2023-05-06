@@ -1,24 +1,29 @@
 package com.chageunchageun.chageunchageun.service;
 
-import com.chageunchageun.chageunchageun.data.dao.MemoirDAO;
 import com.chageunchageun.chageunchageun.data.dto.MemoirDTO;
+import com.chageunchageun.chageunchageun.data.dto.MemoirSaveDTO;
 import com.chageunchageun.chageunchageun.data.entity.Memoir;
+import com.chageunchageun.chageunchageun.data.repository.MemoirRepository;
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
 import java.time.LocalDate;
+
+
 
 @Service
 public class MemoirService {
 
+    private final MemoirRepository memoirRepository;
     @Autowired
-    MemoirDAO memoirDAO;
-
-    public MemoirService(MemoirDAO memoirDAO) {
-        this.memoirDAO = memoirDAO;
+    public MemoirService(MemoirRepository memoirRepository) {
+        this.memoirRepository = memoirRepository;
     }
 
     /**
@@ -34,14 +39,14 @@ public class MemoirService {
      * img_url : 이미지 저장 경로
      */
 
-    public void saveMemoir(MemoirDTO memoirDTO){
+    public void saveMemoir(MemoirSaveDTO memoirSaveDTO){
 
-        String email = memoirDTO.getEmail();
-        LocalDate date = memoirDTO.getDate();
-        String comment = memoirDTO.getComment();
+        String email = memoirSaveDTO.getEmail();
+        LocalDate date = memoirSaveDTO.getDate();
+        String comment = memoirSaveDTO.getComment();
         String imgUrl = "";
-        if(memoirDTO.getImg() != null){
-            imgUrl = saveMemoirImg(email,memoirDTO.getImg(),date);
+        if(memoirSaveDTO.getImg() != null){
+            imgUrl = saveMemoirImg(email, memoirSaveDTO.getImg(),date);
         }
 
         Memoir memoir = new Memoir();
@@ -50,7 +55,7 @@ public class MemoirService {
         memoir.setComment(comment);
         memoir.setImgUrl(imgUrl);
 
-        memoirDAO.insertMemoir(memoir);
+        memoirRepository.save(memoir);
     }
 
     //회고록에 넣은 이미지를 저장하는 메서드
@@ -61,9 +66,10 @@ public class MemoirService {
 
         checkDir(saveDir);
         String fullPath = "";
+        String filename = "";
         if (!file.isEmpty()) {
-            String filename = file.getOriginalFilename();
-            System.out.println("file.getOriginalFilename = " + filename);
+            filename = file.getOriginalFilename();
+            //System.out.println("file.getOriginalFilename = " + filename);
             fullPath = saveDir + filename;
             try {
                 file.transferTo(new File(fullPath));
@@ -71,7 +77,8 @@ public class MemoirService {
                 throw new RuntimeException(e);
             }
         }
-        return fullPath;
+        return filename;
+        //return fullPath;
     }
 
     //폴더 생성
@@ -97,11 +104,18 @@ public class MemoirService {
      * 5. 클라이언트에서 다시 img_url을 통해 이미지 요청
      * 6. 이미지를 주는 api에서 이를 처리
      */
-    public void selectMemoir(String email, LocalDate date){
 
-        memoirDAO.selectMemoir(email, date);
+    public MemoirDTO selectMemoir(String email, LocalDate date){
 
+        Memoir memoir = memoirRepository.findByEmailAndMemoirDate(email, date);
 
+        MemoirDTO memoirDTO = new MemoirDTO();
+        memoirDTO.setEmail(memoir.getEmail());
+        memoirDTO.setDate(memoir.getDate());
+        memoirDTO.setComment(memoir.getComment());
+        memoirDTO.setImgUrl(memoir.getImgUrl());
+
+        return memoirDTO;
     }
 
 }
