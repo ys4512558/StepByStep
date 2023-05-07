@@ -1,10 +1,12 @@
 package com.chageunchageun.chageunchageun.service;
 
+import com.chageunchageun.chageunchageun.data.dto.RutineDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class FileService {
@@ -45,5 +47,14 @@ public class FileService {
                 e.getStackTrace();
             }
         }
+    }
+
+    public void jsonFile (List<RutineDTO> rutines){
+
+        final String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/";
+
+        /**
+         * Json배열을 파일로 저장하고 저장한 파일을 전송하는 메서드 구현
+         */
     }
 }

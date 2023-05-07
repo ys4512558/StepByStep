@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/")
 public class KakaoController {
 
+    /**
+     * 사용안함
+     */
     @Autowired
     KakaoService kakaoService;
 
