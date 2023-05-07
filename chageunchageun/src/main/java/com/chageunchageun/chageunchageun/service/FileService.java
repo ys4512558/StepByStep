@@ -1,11 +1,17 @@
 package com.chageunchageun.chageunchageun.service;
 
-import com.chageunchageun.chageunchageun.data.dto.RutineDTO;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -49,12 +55,57 @@ public class FileService {
         }
     }
 
-    public void jsonFile (List<RutineDTO> rutines){
+    public List<HashMap<String, Object>> jsonFile (String jsonData) {
 
-        final String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/";
+        final String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/test.json";
 
-        /**
-         * Json배열을 파일로 저장하고 저장한 파일을 전송하는 메서드 구현
-         */
+        JSONParser parser = new JSONParser();
+
+        List<HashMap<String,Object>> list = new ArrayList<HashMap<String ,Object>>();
+
+        try {
+            JSONObject jsonObject = (JSONObject) parser.parse(jsonData);
+
+            //1. JSONArray의 Routines부분만 저장
+            JSONArray routinesArray = (JSONArray) jsonObject.get("Routines");
+
+            for (Object object : routinesArray) {
+                JSONObject routineObject = (JSONObject) object;
+
+                String itemDisc = (String) routineObject.get("itemDisc");
+                String itemName = (String) routineObject.get("itemName");
+                String start = (String) routineObject.get("start");
+                String end = (String) routineObject.get("end");
+
+                HashMap<String ,Object> map = new HashMap<String , Object>();
+                map.put("itemDisc", itemDisc);
+                map.put("itemName", itemName);
+                map.put("start", start);
+                map.put("end", end);
+
+                list.add(map);
+
+                /*
+                System.out.println("Item Disc: " + itemDisc);
+                System.out.println("Item Name: " + itemName);
+                System.out.println("Start: " + start);
+                System.out.println("End: " + end);
+                */
+            }
+            FileWriter file = new FileWriter(dir);
+            //1.
+            file.write(routinesArray.toJSONString());
+            //file.write(jsonObject.toJSONString());
+            file.flush();
+            file.close();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        File file = new File(dir);
+
+        return list;
     }
 }
