@@ -1,6 +1,7 @@
 package com.chageunchageun.chageunchageun.service;
 
 import com.chageunchageun.chageunchageun.data.dto.RoutineDTO;
+import com.chageunchageun.chageunchageun.data.dto.RoutinesDTO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
-public class FileService {
+public class RoutineService {
 
 
     /**
@@ -123,7 +124,7 @@ public class FileService {
             JSONArray routinesArray = (JSONArray) jsonObject.get("Routine");
             System.out.println(routinesArray);
 
-
+            String email = (String) jsonObject.get("email");
             String day = (String) jsonObject.get("day");
             System.out.println(day);
 
@@ -144,9 +145,8 @@ public class FileService {
                 list.add(routineDTO);
             }
             FileWriter file = new FileWriter(dir);
-            //1.
+
             file.write(routinesArray.toJSONString());
-            //file.write(jsonObject.toJSONString());
             file.flush();
             file.close();
 
@@ -157,16 +157,57 @@ public class FileService {
         }
     }
 
-    //.json파일 읽어서 다시 전송
-    public List<RoutineDTO> ReadJsonFile(){
-        final String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/test.json";
+
+    /**
+     * 문자여 routines를 @RequestBody에서 받음
+     * Json으로 파싱 후 파일에 저장
+     * 파일은 Json속 email, day를 통해 폴더 해당 폴더에 저장
+     * @param routines
+     */
+    public void saveRoutines(String routines){
+        String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/";
 
         JSONParser parser = new JSONParser();
-        JSONArray jsonArray;
 
         try {
+            JSONObject jsonObject = (JSONObject) parser.parse(routines);
+            String email = (String) jsonObject.get("email");
+            String day = (String) jsonObject.get("day");
+
+            System.out.println(jsonObject);
+
+            dir +=  email + "/Routine/" + day + "/test.json";
+            FileWriter file = new FileWriter(dir);
+
+            file.write(jsonObject.toJSONString());
+            file.flush();
+            file.close();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    //.json파일 읽어서 다시 전송
+    public RoutinesDTO selectRoutines(String emailParam, String dayParam){
+        final String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/" +
+                emailParam + "/Routine/" + dayParam + "/test.json";
+
+        JSONParser parser = new JSONParser();
+        JSONArray routinesArray;
+        String email;
+        String day;
+        try {
             FileReader fileReader = new FileReader(dir);
-             jsonArray = (JSONArray) parser.parse(fileReader);
+            JSONObject jsonObject = (JSONObject) parser.parse(fileReader);
+
+            routinesArray = (JSONArray) jsonObject.get("Routine");
+            email = (String) jsonObject.get("email");
+            day = (String) jsonObject.get("day");
+
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -175,9 +216,9 @@ public class FileService {
             throw new RuntimeException(e);
         }
 
-        List<RoutineDTO> list = new ArrayList<RoutineDTO>();
+        List<RoutineDTO> routines = new ArrayList<RoutineDTO>();
 
-        for (Object object : jsonArray) {
+        for (Object object : routinesArray) {
             JSONObject routineObject = (JSONObject) object;
 
             String itemDisc = (String) routineObject.get("itemDisc");
@@ -191,9 +232,14 @@ public class FileService {
             routineDTO.setEnd(end);
             routineDTO.setStart(start);
 
-            list.add(routineDTO);
+            routines.add(routineDTO);
         }
 
-        return list;
+        RoutinesDTO routinesDTO = new RoutinesDTO();
+        routinesDTO.setRoutines(routines);
+        routinesDTO.setEmail(email);
+        routinesDTO.setDay(day);
+
+        return routinesDTO;
     }
 }

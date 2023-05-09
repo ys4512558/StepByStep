@@ -43,7 +43,7 @@ public class SignUpService {
         final String userPath = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/" + email;
 
         File Folder = new File(userPath);
-        File RotineFolder = new File(userPath + "/Rotine");
+        File RotineFolder = new File(userPath + "/Routine");
         File TodoFolder = new File(userPath + "/Todo");
         File MemoirFolder = new File(userPath + "/Memoir");
 
