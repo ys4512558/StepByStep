@@ -1,5 +1,6 @@
 package com.chageunchageun.chageunchageun.service;
 
+import com.chageunchageun.chageunchageun.data.dto.RoutineDTO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -7,9 +8,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -105,6 +104,95 @@ public class FileService {
             throw new RuntimeException(e);
         }
         File file = new File(dir);
+
+        return list;
+    }
+
+    public void jsonFile2 (String jsonData) {
+
+        final String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/test.json";
+
+        JSONParser parser = new JSONParser();
+
+        List<RoutineDTO> list = new ArrayList<RoutineDTO>();
+
+        try {
+            JSONObject jsonObject = (JSONObject) parser.parse(jsonData);
+
+            //1. JSONArray의 Routines부분만 저장
+            JSONArray routinesArray = (JSONArray) jsonObject.get("Routine");
+            System.out.println(routinesArray);
+
+
+            String day = (String) jsonObject.get("day");
+            System.out.println(day);
+
+            for (Object object : routinesArray) {
+                JSONObject routineObject = (JSONObject) object;
+
+                String itemDisc = (String) routineObject.get("itemDisc");
+                String itemName = (String) routineObject.get("itemName");
+                String start = (String) routineObject.get("start");
+                String end = (String) routineObject.get("end");
+
+                RoutineDTO routineDTO = new RoutineDTO();
+                routineDTO.setItemDisc(itemDisc);
+                routineDTO.setItemName(itemName);
+                routineDTO.setEnd(end);
+                routineDTO.setStart(start);
+
+                list.add(routineDTO);
+            }
+            FileWriter file = new FileWriter(dir);
+            //1.
+            file.write(routinesArray.toJSONString());
+            //file.write(jsonObject.toJSONString());
+            file.flush();
+            file.close();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //.json파일 읽어서 다시 전송
+    public List<RoutineDTO> ReadJsonFile(){
+        final String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/test.json";
+
+        JSONParser parser = new JSONParser();
+        JSONArray jsonArray;
+
+        try {
+            FileReader fileReader = new FileReader(dir);
+             jsonArray = (JSONArray) parser.parse(fileReader);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<RoutineDTO> list = new ArrayList<RoutineDTO>();
+
+        for (Object object : jsonArray) {
+            JSONObject routineObject = (JSONObject) object;
+
+            String itemDisc = (String) routineObject.get("itemDisc");
+            String itemName = (String) routineObject.get("itemName");
+            String start = (String) routineObject.get("start");
+            String end = (String) routineObject.get("end");
+
+            RoutineDTO routineDTO = new RoutineDTO();
+            routineDTO.setItemDisc(itemDisc);
+            routineDTO.setItemName(itemName);
+            routineDTO.setEnd(end);
+            routineDTO.setStart(start);
+
+            list.add(routineDTO);
+        }
 
         return list;
     }

@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RutineDTO {
+public class RoutineDTO {
 
     private String itemDisc;
     private String itemName;
