@@ -10,7 +10,7 @@ public class Memoir {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto increment
-    private int idx;
+    private Integer idx;
 
     @Column
     private String email;

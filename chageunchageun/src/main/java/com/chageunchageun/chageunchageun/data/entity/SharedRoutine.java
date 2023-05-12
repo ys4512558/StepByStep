@@ -1,9 +1,6 @@
 package com.chageunchageun.chageunchageun.data.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,15 +8,18 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "SharedRoutine")
 public class SharedRoutine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idx;
+    private Integer idx;
 
     @Column
     private String mbti;
@@ -28,7 +28,7 @@ public class SharedRoutine {
     private String nickName;
 
     @Column
-    private String categori;
+    private String category;
 
     @Column
     private String routineName;
@@ -46,7 +46,7 @@ public class SharedRoutine {
     private String end;
 
     @Column
-    private int count;
+    private Integer count;
 
     @Column
     private LocalDate sharedDate;

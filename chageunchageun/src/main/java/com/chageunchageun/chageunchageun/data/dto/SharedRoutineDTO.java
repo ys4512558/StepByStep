@@ -25,7 +25,7 @@ public class SharedRoutineDTO {
     //공유자의 닉네임
     private String nickName;
     //카테고리(운동, 일상, 공부, 기타)
-    private String categori;
+    private String category;
     //루틴 이름
     private String routineName;
     //루틴 내용

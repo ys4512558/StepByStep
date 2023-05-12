@@ -84,13 +84,6 @@ public class RoutineService {
                 map.put("end", end);
 
                 list.add(map);
-
-                /*
-                System.out.println("Item Disc: " + itemDisc);
-                System.out.println("Item Name: " + itemName);
-                System.out.println("Start: " + start);
-                System.out.println("End: " + end);
-                */
             }
             FileWriter file = new FileWriter(dir);
             //1.
@@ -122,11 +115,9 @@ public class RoutineService {
 
             //1. JSONArray의 Routines부분만 저장
             JSONArray routinesArray = (JSONArray) jsonObject.get("Routine");
-            System.out.println(routinesArray);
 
             String email = (String) jsonObject.get("email");
             String day = (String) jsonObject.get("day");
-            System.out.println(day);
 
             for (Object object : routinesArray) {
                 JSONObject routineObject = (JSONObject) object;
@@ -173,8 +164,6 @@ public class RoutineService {
             JSONObject jsonObject = (JSONObject) parser.parse(routines);
             String email = (String) jsonObject.get("email");
             String day = (String) jsonObject.get("day");
-
-            System.out.println(jsonObject);
 
             dir +=  email + "/Routine/" + day + "/test.json";
             FileWriter file = new FileWriter(dir);

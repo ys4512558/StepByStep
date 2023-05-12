@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
 
-
-public interface MemoirRepository extends JpaRepository<Memoir, String> {
+//JpaRepository<entity, primary key 타입>
+public interface MemoirRepository extends JpaRepository<Memoir, Integer> {
 
     Memoir findByEmailAndMemoirDate(String email, LocalDate memoirDate);
 
