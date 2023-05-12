@@ -159,7 +159,7 @@ public class RoutineService {
 
 
     /**
-     * 문자여 routines를 @RequestBody에서 받음
+     * 문자열 routines를 @RequestBody에서 받음
      * Json으로 파싱 후 파일에 저장
      * 파일은 Json속 email, day를 통해 폴더 해당 폴더에 저장
      * @param routines

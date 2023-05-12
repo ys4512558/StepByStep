@@ -13,6 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 public class RoutinesDTO {
 
+    /**
+     * 여러 루틴을 전송하기 위한 RoutinesDTO
+     * JsonArray로 전송하기 위해
+     */
     private List<RoutineDTO> routines;
 
     private String email;
