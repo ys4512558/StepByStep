@@ -82,6 +82,4 @@ public class MemoirController {
             outputStream.write(buffer, 0, length);
         }
     }
-
-
 }
