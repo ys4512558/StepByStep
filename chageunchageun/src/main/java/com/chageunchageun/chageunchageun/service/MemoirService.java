@@ -4,15 +4,11 @@ import com.chageunchageun.chageunchageun.data.dto.MemoirDTO;
 import com.chageunchageun.chageunchageun.data.dto.MemoirSaveDTO;
 import com.chageunchageun.chageunchageun.data.entity.Memoir;
 import com.chageunchageun.chageunchageun.data.repository.MemoirRepository;
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.time.LocalDate;
 
 
@@ -61,8 +57,9 @@ public class MemoirService {
     //회고록에 넣은 이미지를 저장하는 메서드
     public String saveMemoirImg (String email, MultipartFile file, LocalDate date){
 
-        final String saveDir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/"
-                + email + "/Memoir/" + date + "/";
+        //final String saveDir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/" + email + "/Memoir/" + date + "/";
+        final String saveDir =
+                "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/" + email + "/Memoir/" + date + "/";
 
         checkDir(saveDir);
         String fullPath = "";

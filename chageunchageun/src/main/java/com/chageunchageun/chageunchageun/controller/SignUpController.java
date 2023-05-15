@@ -1,8 +1,6 @@
 package com.chageunchageun.chageunchageun.controller;
 
 import com.chageunchageun.chageunchageun.service.SignUpService;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

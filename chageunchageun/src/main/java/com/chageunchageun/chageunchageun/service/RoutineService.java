@@ -104,8 +104,9 @@ public class RoutineService {
 
     public void jsonFile2 (String jsonData) {
 
-        final String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/test.json";
-
+        //final String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/test.json";
+        final String dir =
+                "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/test.json";
         JSONParser parser = new JSONParser();
 
         List<RoutineDTO> list = new ArrayList<RoutineDTO>();
@@ -156,7 +157,9 @@ public class RoutineService {
      * @param routines
      */
     public void saveRoutines(String routines){
-        String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/";
+        //String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/";
+        String dir =
+                "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/";
 
         JSONParser parser = new JSONParser();
 
@@ -165,7 +168,7 @@ public class RoutineService {
             String email = (String) jsonObject.get("email");
             String day = (String) jsonObject.get("day");
 
-            dir +=  email + "/Routine/" + day + "/test.json";
+            dir +=  email + "/Memoir/" + day + "/test.json";
             FileWriter file = new FileWriter(dir);
 
             file.write(jsonObject.toJSONString());
@@ -182,8 +185,10 @@ public class RoutineService {
 
     //.json파일 읽어서 다시 전송
     public RoutinesDTO selectRoutines(String emailParam, String dayParam){
-        final String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/" +
-                emailParam + "/Routine/" + dayParam + "/test.json";
+        //final String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/" + emailParam + "/Routine/" + dayParam + "/test.json";
+
+        final String dir = "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/"
+                + emailParam + "/Routine/" + dayParam + "/test.json";
 
         JSONParser parser = new JSONParser();
         JSONArray routinesArray;
