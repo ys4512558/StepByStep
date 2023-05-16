@@ -27,24 +27,24 @@ public class MemoirController {
     private final Logger LOGGER = LoggerFactory.getLogger(MemoirController.class);
 
     /**
-     *회고록 저장 컨트롤러
+     *루틴 완료 사진 저장 컨트롤러
      */
     @PostMapping(value = "memoir")
-    public ResponseEntity<String> saveMemoir(@RequestParam String email,
-                                       @RequestParam String comment,
+    public ResponseEntity<HttpStatus> saveMemoir(@RequestParam String email,
+                                       @RequestParam String date,
+                                       @RequestParam String routineName,
                                        @RequestParam MultipartFile image) throws IOException {
-
 
         MemoirSaveDTO memoirSaveDTO = new MemoirSaveDTO();
 
         memoirSaveDTO.setEmail(email);
-        memoirSaveDTO.setDate(LocalDate.now());
-        memoirSaveDTO.setComment(comment);
+        memoirSaveDTO.setDate(LocalDate.parse(date));
+        memoirSaveDTO.setRoutineName(routineName);
         memoirSaveDTO.setImg(image);
 
         memoirService.saveMemoir(memoirSaveDTO);
 
-        return ResponseEntity.status(HttpStatus.OK).body("OK!!!");
+        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
     /**

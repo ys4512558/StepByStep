@@ -36,7 +36,6 @@ public class SignUpService {
         user.setUserPath(userPath);
 
         userRepository.save(user);
-
     }
 
     /**

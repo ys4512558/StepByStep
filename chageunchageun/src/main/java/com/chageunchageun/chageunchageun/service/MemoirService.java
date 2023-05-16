@@ -39,16 +39,19 @@ public class MemoirService {
 
         String email = memoirSaveDTO.getEmail();
         LocalDate date = memoirSaveDTO.getDate();
-        String comment = memoirSaveDTO.getComment();
+        String routineName = memoirSaveDTO.getRoutineName();
         String imgUrl = "";
         if(memoirSaveDTO.getImg() != null){
             imgUrl = saveMemoirImg(email, memoirSaveDTO.getImg(),date);
         }
+        System.out.println("email" + email);
+        System.out.println("date" + date);
+        System.out.println("routineName" + routineName);
+        System.out.println("imgUrl" + imgUrl);
 
         Memoir memoir = new Memoir();
         memoir.setEmail(email);
-        memoir.setDate(date);
-        memoir.setComment(comment);
+        memoir.setMemoirDate(date);
         memoir.setImgUrl(imgUrl);
 
         memoirRepository.save(memoir);
@@ -59,7 +62,7 @@ public class MemoirService {
 
         //final String saveDir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/" + email + "/Memoir/" + date + "/";
         final String saveDir =
-                "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/" + email + "/Memoir/" + date + "/";
+                "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/" + email + "/Memoir/" + date; //+ "/";
 
         checkDir(saveDir);
         String fullPath = "";
@@ -67,7 +70,7 @@ public class MemoirService {
         if (!file.isEmpty()) {
             filename = file.getOriginalFilename();
             //System.out.println("file.getOriginalFilename = " + filename);
-            fullPath = saveDir + filename;
+            fullPath = saveDir + "/" +filename;
             try {
                 file.transferTo(new File(fullPath));
             } catch (IOException e) {
@@ -108,7 +111,7 @@ public class MemoirService {
 
         MemoirDTO memoirDTO = new MemoirDTO();
         memoirDTO.setEmail(memoir.getEmail());
-        memoirDTO.setDate(memoir.getDate());
+        memoirDTO.setDate(memoir.getMemoirDate());
         memoirDTO.setComment(memoir.getComment());
         memoirDTO.setImgUrl(memoir.getImgUrl());
 

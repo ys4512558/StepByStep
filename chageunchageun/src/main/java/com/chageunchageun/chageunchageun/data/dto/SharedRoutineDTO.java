@@ -20,10 +20,13 @@ public class SharedRoutineDTO {
      * 2. 여러개 (Json Array)
      */
 
+    private Integer idx;
+    //공유자 이메일
+    private String email;
     //mbti커뮤니티
     private String mbti;
     //공유자의 닉네임
-    private String nickName;
+    private String name;
     //카테고리(운동, 일상, 공부, 기타)
     private String category;
     //루틴 이름

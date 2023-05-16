@@ -22,10 +22,13 @@ public class SharedRoutine {
     private Integer idx;
 
     @Column
-    private String mbti;
+    private String email;
 
     @Column
-    private String nickName;
+    private String name;
+
+    @Column
+    private String mbti;
 
     @Column
     private String category;

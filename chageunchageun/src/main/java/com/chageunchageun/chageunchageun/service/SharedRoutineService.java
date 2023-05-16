@@ -34,9 +34,10 @@ public class SharedRoutineService {
     public void saveSharedRoutine(String sharedRoutine){
         JSONParser parser = new JSONParser();
 
-        //mbti, nickName, sharedDate는 하나만 있어도 됨
+        //mbti, name, sharedDate는 하나만 있어도 됨
+        String email;
         String mbti;
-        String nickName;
+        String name;
         LocalDate sharedDate;
         //공유할 루틴에 각각 다른 정보가 저장될 수 있음
         //따라서 JsonArray 사용
@@ -44,8 +45,9 @@ public class SharedRoutineService {
 
         try {
             JSONObject jsonObject = (JSONObject) parser.parse(sharedRoutine);
+            email = (String) jsonObject.get("email");
             mbti = (String) jsonObject.get("mbti");
-            nickName = (String) jsonObject.get("nickName");
+            name = (String) jsonObject.get("name");
             sharedDate = LocalDate.parse((String) jsonObject.get("sharedDate"), DateTimeFormatter.ISO_DATE);
             routines = (JSONArray) jsonObject.get("sharedRoutines");
 
@@ -53,7 +55,7 @@ public class SharedRoutineService {
             throw new RuntimeException(e);
         }
 
-        List<SharedRoutine> list = parseJsonArray(routines, mbti, nickName, sharedDate);
+        List<SharedRoutine> list = parseJsonArray(routines, mbti, name, sharedDate);
 
         //DB에 저장
         for (SharedRoutine routine : list){
@@ -103,7 +105,7 @@ public class SharedRoutineService {
             sharedRoutine.setCount(count);
             
             sharedRoutine.setMbti(mbti);
-            sharedRoutine.setNickName(nickName);
+            sharedRoutine.setName(nickName);
             sharedRoutine.setSharedDate(sharedDate);
             
             list.add(sharedRoutine);
@@ -119,13 +121,14 @@ public class SharedRoutineService {
         List<SharedRoutine> sharedRoutines = sharedRoutineRepository.findByCategory(category);
         List<SharedRoutineDTO> sharedRoutineDTOS = new ArrayList<SharedRoutineDTO>();
 
-
         for(SharedRoutine sharedRoutine : sharedRoutines){
             SharedRoutineDTO sharedRoutineDTO = new SharedRoutineDTO();
 
             //DTO초기화
+            sharedRoutineDTO.setIdx(sharedRoutine.getIdx());
+            sharedRoutineDTO.setMbti(sharedRoutine.getEmail());
             sharedRoutineDTO.setMbti(sharedRoutine.getMbti());
-            sharedRoutineDTO.setNickName(sharedRoutine.getNickName());
+            sharedRoutineDTO.setName(sharedRoutine.getName());
             sharedRoutineDTO.setCategory(sharedRoutine.getCategory());
             sharedRoutineDTO.setRoutineName(sharedRoutine.getRoutineName());
             sharedRoutineDTO.setRoutineContent(sharedRoutine.getRoutineContent());

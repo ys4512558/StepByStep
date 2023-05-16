@@ -1,14 +1,13 @@
 package com.chageunchageun.chageunchageun.data.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,4 +31,10 @@ public class User {
 
     @Column
     String userPath;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<Routine> routines;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<Todo> todos;
 }
