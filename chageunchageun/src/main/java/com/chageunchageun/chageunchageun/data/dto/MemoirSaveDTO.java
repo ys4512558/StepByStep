@@ -19,7 +19,7 @@ public class MemoirSaveDTO {
 
     private LocalDate date;
 
-    private String routineName;
+    private String itemName;
 
     private MultipartFile img;
 }

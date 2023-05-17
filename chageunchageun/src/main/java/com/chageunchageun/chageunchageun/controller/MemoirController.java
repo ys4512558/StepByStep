@@ -32,14 +32,14 @@ public class MemoirController {
     @PostMapping(value = "memoir")
     public ResponseEntity<HttpStatus> saveMemoir(@RequestParam String email,
                                        @RequestParam String date,
-                                       @RequestParam String routineName,
+                                       @RequestParam String itemName,
                                        @RequestParam MultipartFile image) throws IOException {
 
         MemoirSaveDTO memoirSaveDTO = new MemoirSaveDTO();
 
         memoirSaveDTO.setEmail(email);
         memoirSaveDTO.setDate(LocalDate.parse(date));
-        memoirSaveDTO.setRoutineName(routineName);
+        memoirSaveDTO.setItemName(itemName);
         memoirSaveDTO.setImg(image);
 
         memoirService.saveMemoir(memoirSaveDTO);
@@ -68,8 +68,10 @@ public class MemoirController {
                     @PathVariable("img") String img) throws IOException {
         ServletOutputStream outputStream = response.getOutputStream();
 
-        File file = new File("C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/"
-                + email + "/Memoir/" + memoirDate + "/" + img + ".jpg");
+        String filePath = "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/"
+                + email + "/Memoir/" + memoirDate + "/" + img;
+
+        File file = new File(filePath);
         if (!file.exists()) {
             //해당 파일이 존재하지 않을 때 처리
         }

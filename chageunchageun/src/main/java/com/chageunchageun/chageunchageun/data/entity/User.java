@@ -18,26 +18,30 @@ import java.util.List;
 public class User {
 
     @Id
-    String email;
+    private String email;
 
     @Column
-    String name;
+    private String name;
 
     @Column
-    String imgUrl;
+    private String imgUrl;
 
     @Column
-    String mbti;
+    private String mbti;
 
     @Column
-    String userPath;
+    private String userPath;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    List<Routine> routines;
+    private List<Routine> routines;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    List<Todo> todos;
+    private List<Todo> todos;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    List<SharedRoutine> sharedRoutines;
+    private List<SharedRoutine> sharedRoutines;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Memoir> memoirs;
+
 }

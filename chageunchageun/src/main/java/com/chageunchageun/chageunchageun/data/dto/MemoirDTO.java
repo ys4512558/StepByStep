@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,6 +20,6 @@ public class MemoirDTO {
 
     private String comment;
 
-    private String imgUrl;
+    private List<String> imgUrl;
 
 }

@@ -1,12 +1,10 @@
 package com.chageunchageun.chageunchageun.data.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,8 +18,10 @@ public class Memoir {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto increment
     private Integer idx;
 
-    @Column
-    private String email;
+    @ManyToOne
+    @JoinColumn(name = "user_email")
+    @ToString.Exclude
+    private User user;
 
     @Column
     private LocalDate memoirDate;
@@ -29,6 +29,7 @@ public class Memoir {
     @Column
     private String comment;
 
-    @Column
-    private String imgUrl;
+    @OneToMany(mappedBy = "memoir", fetch = FetchType.LAZY)
+    private List<MemoirImg> memoirImgs;
+
 }
