@@ -30,11 +30,11 @@ public class SharedRoutineDTO {
     //카테고리(운동, 일상, 공부, 기타)
     private String category;
     //루틴 이름
-    private String routineName;
+    private String itemName;
     //루틴 내용
-    private String routineContent;
+    private String itemDisc;
     //루틴 설명
-    private String routineExplain;
+    private String itemExplain;
     //시작 시간
     private String start;
     //종료 시간

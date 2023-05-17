@@ -1,8 +1,10 @@
 package com.chageunchageun.chageunchageun.service;
 
+import com.chageunchageun.chageunchageun.data.entity.User;
 import com.chageunchageun.chageunchageun.data.dto.SharedRoutineDTO;
 import com.chageunchageun.chageunchageun.data.entity.SharedRoutine;
 import com.chageunchageun.chageunchageun.data.repository.SharedRoutineRepository;
+import com.chageunchageun.chageunchageun.data.repository.UserRepository;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -20,9 +22,11 @@ import java.util.List;
 public class SharedRoutineService {
 
 
+    private final UserRepository userRepository;
     private final SharedRoutineRepository sharedRoutineRepository;
     @Autowired
-    public SharedRoutineService(SharedRoutineRepository sharedRoutineRepository) {
+    public SharedRoutineService(UserRepository userRepository, SharedRoutineRepository sharedRoutineRepository) {
+        this.userRepository = userRepository;
         this.sharedRoutineRepository = sharedRoutineRepository;
     }
 
@@ -55,7 +59,7 @@ public class SharedRoutineService {
             throw new RuntimeException(e);
         }
 
-        List<SharedRoutine> list = parseJsonArray(routines, mbti, name, sharedDate);
+        List<SharedRoutine> list = parseJsonArray(routines, email, mbti, name, sharedDate);
 
         //DB에 저장
         for (SharedRoutine routine : list){
@@ -67,18 +71,18 @@ public class SharedRoutineService {
      * JsonArray를 파싱한 후 리스트로 리턴
      * @param routines
      * @param mbti
-     * @param nickName
+     * @param name
      * @param sharedDate
      * @return
      */
-    public List<SharedRoutine> parseJsonArray(JSONArray routines,
-                                              String mbti, String nickName, LocalDate sharedDate){
+    public List<SharedRoutine> parseJsonArray(JSONArray routines, String email,
+                                              String mbti, String name, LocalDate sharedDate){
 
         //JSONArray에 들어갈 내용들
         String category;
-        String routineName;
-        String routineContent;
-        String routineExplain;
+        String itemName;
+        String itemDisc;
+        String itemExplain;
         String start;
         String end;
         int count;
@@ -87,25 +91,28 @@ public class SharedRoutineService {
         for(Object object : routines){
             JSONObject routineObject = (JSONObject) object;
 
+            //유저의 정보 가져오기
+            User user = userRepository.getReferenceById(email);
+
             category = (String) routineObject.get("category");
-            routineName = (String) routineObject.get("routineName");
-            routineContent = (String) routineObject.get("routineContent");
-            routineExplain = (String) routineObject.get("routineExplain");
+            itemName = (String) routineObject.get("itemName");
+            itemDisc = (String) routineObject.get("itemDisc");
+            itemExplain = (String) routineObject.get("itemExplain");
             start = (String) routineObject.get("start");
             end = (String) routineObject.get("end");
             count =  Integer.parseInt((String) routineObject.get("count"));
             
             SharedRoutine sharedRoutine = new SharedRoutine();
+            //유저 정보(이메일)
+            sharedRoutine.setUser(user);
+
             sharedRoutine.setCategory(category);
-            sharedRoutine.setRoutineName(routineName);
-            sharedRoutine.setRoutineContent(routineContent);
-            sharedRoutine.setRoutineExplain(routineExplain);
+            sharedRoutine.setItemName(itemName);
+            sharedRoutine.setItemDisc(itemDisc);
+            sharedRoutine.setItemExplain(itemExplain);
             sharedRoutine.setStart(start);
             sharedRoutine.setEnd(end);
             sharedRoutine.setCount(count);
-            
-            sharedRoutine.setMbti(mbti);
-            sharedRoutine.setName(nickName);
             sharedRoutine.setSharedDate(sharedDate);
             
             list.add(sharedRoutine);
@@ -122,17 +129,22 @@ public class SharedRoutineService {
         List<SharedRoutineDTO> sharedRoutineDTOS = new ArrayList<SharedRoutineDTO>();
 
         for(SharedRoutine sharedRoutine : sharedRoutines){
+
+            String email = sharedRoutine.getUser().getEmail();
+            String name = sharedRoutine.getUser().getName();
+            String mbti = sharedRoutine.getUser().getMbti();
+
             SharedRoutineDTO sharedRoutineDTO = new SharedRoutineDTO();
 
             //DTO초기화
             sharedRoutineDTO.setIdx(sharedRoutine.getIdx());
-            sharedRoutineDTO.setMbti(sharedRoutine.getEmail());
-            sharedRoutineDTO.setMbti(sharedRoutine.getMbti());
-            sharedRoutineDTO.setName(sharedRoutine.getName());
+            sharedRoutineDTO.setMbti(email);
+            sharedRoutineDTO.setMbti(mbti);
+            sharedRoutineDTO.setName(name);
             sharedRoutineDTO.setCategory(sharedRoutine.getCategory());
-            sharedRoutineDTO.setRoutineName(sharedRoutine.getRoutineName());
-            sharedRoutineDTO.setRoutineContent(sharedRoutine.getRoutineContent());
-            sharedRoutineDTO.setRoutineExplain(sharedRoutine.getRoutineExplain());
+            sharedRoutineDTO.setItemName(sharedRoutine.getItemName());
+            sharedRoutineDTO.setItemDisc(sharedRoutine.getItemDisc());
+            sharedRoutineDTO.setItemExplain(sharedRoutine.getItemExplain());
             sharedRoutineDTO.setStart(sharedRoutine.getStart());
             sharedRoutineDTO.setEnd(sharedRoutine.getEnd());
             sharedRoutineDTO.setCount(sharedRoutine.getCount());

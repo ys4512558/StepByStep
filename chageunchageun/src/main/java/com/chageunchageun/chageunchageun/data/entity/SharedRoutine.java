@@ -1,10 +1,7 @@
 package com.chageunchageun.chageunchageun.data.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -21,26 +18,22 @@ public class SharedRoutine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idx;
 
-    @Column
-    private String email;
-
-    @Column
-    private String name;
-
-    @Column
-    private String mbti;
+    @ManyToOne
+    @JoinColumn(name = "user_email")
+    @ToString.Exclude
+    private User user;
 
     @Column
     private String category;
 
     @Column
-    private String routineName;
+    private String itemName;
 
     @Column
-    private String routineContent;
+    private String itemDisc;
 
     @Column
-    private String routineExplain;
+    private String itemExplain;
 
     @Column
     private String start;

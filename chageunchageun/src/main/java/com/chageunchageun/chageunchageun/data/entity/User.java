@@ -37,4 +37,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<Todo> todos;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<SharedRoutine> sharedRoutines;
 }

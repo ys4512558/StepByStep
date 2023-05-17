@@ -14,8 +14,6 @@ public class Routine {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto increment
     Integer idx;
 
-    //@Column
-    //private String  email;
     @ManyToOne
     @JoinColumn(name = "user_email")
     @ToString.Exclude

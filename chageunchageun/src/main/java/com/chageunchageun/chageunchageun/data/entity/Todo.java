@@ -14,7 +14,6 @@ public class Todo {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto increment
     Integer idx;
 
-    //외래키 지정
     @ManyToOne
     @JoinColumn(name = "user_email")
     @ToString.Exclude
