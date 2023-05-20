@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/memoir/")
 public class MemoirController {
     @Autowired
     MemoirService memoirService;
@@ -29,7 +29,7 @@ public class MemoirController {
     /**
      *루틴 완료 사진 저장 컨트롤러
      */
-    @PostMapping(value = "memoir")
+    @PostMapping(value = "save")
     public ResponseEntity<HttpStatus> saveMemoir(@RequestParam String email,
                                        @RequestParam String date,
                                        @RequestParam String itemName,
@@ -51,7 +51,7 @@ public class MemoirController {
      *회고록 조회 컨트롤러
      */
 
-    @GetMapping(value = "memoir")
+    @GetMapping(value = "select")
     public ResponseEntity<MemoirDTO> selectMemoir(@RequestParam String email,
                                                @RequestParam LocalDate date){
 

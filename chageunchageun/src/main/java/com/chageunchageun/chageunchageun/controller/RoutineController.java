@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/routine/")
 public class RoutineController {
     @Autowired
     RoutineService routineService;
@@ -25,7 +25,7 @@ public class RoutineController {
      * @param routines
      * @return
      */
-    @PostMapping(value = "Routines")
+    @PostMapping(value = "save")
     public ResponseEntity<HttpStatus> saveRoutines(@RequestBody String routines){
 
         //routineService.saveRoutines(routines);
@@ -41,7 +41,7 @@ public class RoutineController {
      * @param day
      * @return
      */
-    @GetMapping(value = "Routines")
+    @GetMapping(value = "select")
     public ResponseEntity<RoutinesDTO> selectRoutines(
             @RequestParam String email,
             @RequestParam String day){

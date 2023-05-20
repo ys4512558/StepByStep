@@ -3,6 +3,8 @@ package com.chageunchageun.chageunchageun.data.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @Setter
@@ -23,14 +25,14 @@ public class Todo {
     private String todoName;
 
     @Column
-    private boolean repeat;
+    private Boolean oneOff;
 
     @Column
-    private String todoContent;
+    private String todoDisc;
 
     @Column
-    private String startDay;
+    private LocalDate startDate;
 
     @Column
-    private String endDay;
+    private LocalDate endDate;
 }

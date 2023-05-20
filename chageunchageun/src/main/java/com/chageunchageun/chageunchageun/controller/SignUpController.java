@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/SignUp")
 public class SignUpController {
 
     @Autowired
     SignUpService signUpService;
 
-    @PostMapping(value = "SignUp")
+    @PostMapping()
     public ResponseEntity<HttpStatus> SignUp(@RequestBody HashMap<String, Object> userInfo){
 
         signUpService.saveUserInfo(userInfo);

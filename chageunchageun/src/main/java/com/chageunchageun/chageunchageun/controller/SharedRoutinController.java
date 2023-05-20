@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/v1/")
+@RequestMapping(value = "/api/shareRoutine/")
 public class SharedRoutinController {
 
     @Autowired
     SharedRoutineService sharedRoutineService;
 
     //루틴공유
-    @PostMapping(value = "ShareRoutine")
+    @PostMapping(value = "share")
     public ResponseEntity<HttpStatus> shareRoutine(@RequestBody String routine){
 
         sharedRoutineService.saveSharedRoutine(routine);
@@ -28,7 +28,7 @@ public class SharedRoutinController {
     /**
      * 클라이언트로부터 카테고리를 받아 전송하는 컨트롤러
      */
-    @GetMapping(value = "ShareRoutine")
+    @GetMapping(value = "selectCategory")
     public ResponseEntity<List<SharedRoutineDTO>> selectCategory(@RequestParam String category){
         List<SharedRoutineDTO> sharedRoutineDTOList = sharedRoutineService.selectCategory(category);
 
@@ -38,7 +38,7 @@ public class SharedRoutinController {
     /**
      * 루틴 공유 시 공유 카운트 ++
      */
-    @PutMapping(value = "ShareRoutine/{idx}")
+    @PutMapping(value = "shareCount/{idx}")
     public ResponseEntity<HttpStatus> updateCount(@PathVariable int idx){
 
         sharedRoutineService.updateRoutine(idx);
