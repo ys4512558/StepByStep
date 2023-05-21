@@ -1,5 +1,6 @@
 package com.chageunchageun.chageunchageun.service;
 
+import com.chageunchageun.chageunchageun.data.dto.UserDTO;
 import com.chageunchageun.chageunchageun.data.entity.User;
 import com.chageunchageun.chageunchageun.data.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +10,12 @@ import java.io.File;
 import java.util.HashMap;
 
 @Service
-public class SignUpService {
+public class UserService {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public SignUpService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -71,4 +72,18 @@ public class SignUpService {
         }
         return userPath;
     }
+
+    public UserDTO selectUser(String email){
+        User user = userRepository.getReferenceById(email);
+
+        UserDTO userDTO = new UserDTO();
+
+        userDTO.setEmail(user.getEmail());
+        userDTO.setName(user.getName());
+        userDTO.setMbti(user.getMbti());
+        userDTO.setImgUrl(user.getImgUrl());
+
+        return userDTO;
+    }
+
 }

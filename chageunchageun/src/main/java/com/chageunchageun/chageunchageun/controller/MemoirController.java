@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +47,19 @@ public class MemoirController {
 
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
+
+    /**
+     * 회고록 코멘트 작성 컨트롤러
+     */
+    @PostMapping(value = "saveComment")
+    public ResponseEntity<HttpStatus> saveMemoirComment(@RequestParam String email,
+                                                        @RequestParam String date,
+                                                        @RequestParam String comment){
+        memoirService.saveComment(email, LocalDate.parse(date), comment);
+
+        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
+    }
+
 
     /**
      *회고록 조회 컨트롤러

@@ -123,6 +123,15 @@ public class MemoirService {
             }
         }
     }
+    /**
+     * 회고록 코멘트 작성
+     */
+    public void saveComment(String email, LocalDate date, String comment){
+        Memoir memoir = memoirRepository.findByUserEmailAndMemoirDate(email, date);
+        memoir.setComment(comment);
+        memoirRepository.save(memoir);
+    }
+
 
     /**
      * 회고록 불러오는 로직
