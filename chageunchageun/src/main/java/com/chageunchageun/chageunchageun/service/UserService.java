@@ -55,15 +55,15 @@ public class UserService {
                 "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/" + email;
 
         File Folder = new File(userPath);
-        File RotineFolder = new File(userPath + "/Routine");
-        File TodoFolder = new File(userPath + "/Todo");
+        //File RotineFolder = new File(userPath + "/Routine");
+        //File TodoFolder = new File(userPath + "/Todo");
         File MemoirFolder = new File(userPath + "/Memoir");
 
         if (!Folder.exists()) {
             try{
                 Folder.mkdir();
-                RotineFolder.mkdir();
-                TodoFolder.mkdir();
+                //RotineFolder.mkdir();
+                //TodoFolder.mkdir();
                 MemoirFolder.mkdir();
             }
             catch(Exception e){

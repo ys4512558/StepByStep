@@ -18,6 +18,10 @@ public class MemoirDTO {
 
     private LocalDate date;
 
+    private String title;
+
+    private String mood;
+
     private String comment;
 
     private List<String> imgUrl;

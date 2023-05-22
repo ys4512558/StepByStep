@@ -51,11 +51,10 @@ public class MemoirController {
     /**
      * 회고록 코멘트 작성 컨트롤러
      */
-    @PostMapping(value = "saveComment")
-    public ResponseEntity<HttpStatus> saveMemoirComment(@RequestParam String email,
-                                                        @RequestParam String date,
-                                                        @RequestParam String comment){
-        memoirService.saveComment(email, LocalDate.parse(date), comment);
+    @PostMapping(value = "saveContent")
+    public ResponseEntity<HttpStatus> saveMemoirComment(@RequestPart("memoirContent") String memoirContent,
+                                                        @RequestPart("image") MultipartFile image){
+        memoirService.saveComment(memoirContent, image);
 
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
@@ -70,6 +69,7 @@ public class MemoirController {
                                                @RequestParam LocalDate date){
 
         MemoirDTO memoirDTO = memoirService.selectMemoir(email, date);
+
 
         return ResponseEntity.status(HttpStatus.OK).body(memoirDTO);
 

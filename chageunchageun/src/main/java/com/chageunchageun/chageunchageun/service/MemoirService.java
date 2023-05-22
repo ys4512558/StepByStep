@@ -8,6 +8,10 @@ import com.chageunchageun.chageunchageun.data.entity.User;
 import com.chageunchageun.chageunchageun.data.repository.MemoirImgRepository;
 import com.chageunchageun.chageunchageun.data.repository.MemoirRepository;
 import com.chageunchageun.chageunchageun.data.repository.UserRepository;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -126,10 +130,59 @@ public class MemoirService {
     /**
      * 회고록 코멘트 작성
      */
-    public void saveComment(String email, LocalDate date, String comment){
-        Memoir memoir = memoirRepository.findByUserEmailAndMemoirDate(email, date);
+    public void saveComment(String memoirContent, MultipartFile image){
+
+        JSONParser parser = new JSONParser();
+
+        String email = null;
+        LocalDate date = null;
+        String title = null;
+        String mood = null;
+        String comment = null;
+
+        try {
+            JSONObject jsonObject = (JSONObject) parser.parse(memoirContent);
+            email = (String) jsonObject.get("email");
+            date = LocalDate.parse((String) jsonObject.get("date"));
+            title = (String) jsonObject.get("title");
+            mood = (String) jsonObject.get("mood");
+            comment = (String) jsonObject.get("comment");
+            System.out.println(email);
+            System.out.println(date);
+            System.out.println(title);
+            System.out.println(mood);
+            System.out.println(comment);
+
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        Memoir memoir = new Memoir();
+        Optional<Memoir> memoirOptional = memoirRepository.findByUserEmailAndMemoirDate(email, date);
+
+        if(memoirOptional.isPresent()){
+            //DB에 값이 있을 때
+            memoir = memoirOptional.get();
+        }
+        else {
+            User user = userRepository.getReferenceById(email);
+            memoir.setUser(user);
+            memoir.setMemoirDate(date);
+            memoirRepository.save(memoir);
+        }
+
+        memoir.setTitle(title);
         memoir.setComment(comment);
+        memoir.setMood(mood);
+        memoir.setComment(comment);
+
+        MemoirImg memoirImg = new MemoirImg();
+        memoirImg.setMemoir(memoir);
+        String fileName = saveMemoirImg(email, image, date);
+        memoirImg.setImgUrl(fileName);
+
         memoirRepository.save(memoir);
+        memoirImgRepository.save(memoirImg);
     }
 
 
@@ -145,23 +198,30 @@ public class MemoirService {
 
     public MemoirDTO selectMemoir(String email, LocalDate date){
 
-        Memoir memoir = memoirRepository.findByUserEmailAndMemoirDate(email, date);
-
-        List<MemoirImg> memoirImgs = memoirImgRepository.findByMemoirIdx(memoir.getIdx());
-
-        List<String> imgUrls = new ArrayList<>();
-
-        for(MemoirImg m : memoirImgs){
-            String imgUrl = m.getImgUrl();
-            imgUrls.add(imgUrl);
-        }
-
+        Memoir memoir = new Memoir();
+        Optional<Memoir> memoirOptional = memoirRepository.findByUserEmailAndMemoirDate(email, date);
 
         MemoirDTO memoirDTO = new MemoirDTO();
-        memoirDTO.setEmail(memoir.getUser().getEmail());
-        memoirDTO.setDate(memoir.getMemoirDate());
-        memoirDTO.setComment(memoir.getComment());
-        memoirDTO.setImgUrl(imgUrls);
+
+        if(memoirOptional.isPresent()){
+            memoir = memoirOptional.get();
+
+            List<MemoirImg> memoirImgs = memoirImgRepository.findByMemoirIdx(memoir.getIdx());
+
+            List<String> imgUrls = new ArrayList<>();
+
+            for(MemoirImg m : memoirImgs){
+                String imgUrl = m.getImgUrl();
+                imgUrls.add(imgUrl);
+            }
+
+            memoirDTO.setEmail(memoir.getUser().getEmail());
+            memoirDTO.setDate(memoir.getMemoirDate());
+            memoirDTO.setTitle(memoir.getTitle());
+            memoirDTO.setMood(memoir.getMood());
+            memoirDTO.setComment(memoir.getComment());
+            memoirDTO.setImgUrl(imgUrls);
+        }
 
         return memoirDTO;
     }

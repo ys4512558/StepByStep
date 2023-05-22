@@ -27,7 +27,13 @@ public class Memoir {
     private LocalDate memoirDate;
 
     @Column
+    private String title;
+
+    @Column
     private String comment;
+
+    @Column
+    private String mood;
 
     @OneToMany(mappedBy = "memoir", fetch = FetchType.LAZY)
     private List<MemoirImg> memoirImgs;

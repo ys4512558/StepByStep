@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface MemoirRepository extends JpaRepository<Memoir, Integer> {
 
     Optional<Memoir> findByUserEmail(String email);
-    Memoir findByUserEmailAndMemoirDate(String email, LocalDate memoirDate);
+    Optional<Memoir> findByUserEmailAndMemoirDate(String email, LocalDate memoirDate);
 
 
 }
