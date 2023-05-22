@@ -1,7 +1,6 @@
 package com.chageunchageun.chageunchageun.service;
 
-import com.chageunchageun.chageunchageun.data.dto.MemoirDTO;
-import com.chageunchageun.chageunchageun.data.dto.MemoirSaveDTO;
+import com.chageunchageun.chageunchageun.data.dto.*;
 import com.chageunchageun.chageunchageun.data.entity.Memoir;
 import com.chageunchageun.chageunchageun.data.entity.MemoirImg;
 import com.chageunchageun.chageunchageun.data.entity.User;
@@ -70,7 +69,7 @@ public class MemoirService {
         Memoir memoir = new Memoir();
         User user = userRepository.getReferenceById(email);
 
-        Optional<Memoir> memoirOptional = memoirRepository.findByUserEmail(user.getEmail());
+        Optional<Memoir> memoirOptional = memoirRepository.findByUserEmailAndMemoirDate(user.getEmail(), date);
 
         if(memoirOptional.isPresent()){
             //DB에 값이 있을 때
@@ -94,8 +93,13 @@ public class MemoirService {
     public String saveMemoirImg (String email, MultipartFile file, LocalDate date){
 
         //final String saveDir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/" + email + "/Memoir/" + date + "/";
-        final String saveDir =
+        //노트북 경로
+        /*final String saveDir =
                 "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/" + email + "/Memoir/" + date; //+ "/";
+        */
+
+        final String saveDir =
+                "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/chageunchageun/chageunchageun/src/main/resources/User/" + email + "/Memoir/" + date;
 
         checkDir(saveDir);
         String fullPath = "";
@@ -224,6 +228,41 @@ public class MemoirService {
         }
 
         return memoirDTO;
+    }
+
+    /**
+     * 마이페이지 들어가면 보이는 회고록 프리뷰
+     */
+
+    public UserMemoirDTO previewMemoir(String email){
+
+        User user = userRepository.getReferenceById(email);
+
+        UserMemoirDTO userMemoirDTO = new UserMemoirDTO();
+
+        userMemoirDTO.setEmail(user.getEmail());
+        userMemoirDTO.setName(user.getName());
+        userMemoirDTO.setMbti(user.getMbti());
+        userMemoirDTO.setImgUrl(user.getImgUrl());
+
+        List<Memoir> memoirs = memoirRepository.findByUserEmail(email);
+
+        List<MemoirPreviewDTO> memoirPreviewDTOList = new ArrayList<>();
+        for(Memoir memoir : memoirs){
+            MemoirPreviewDTO memoirPreviewDTO = new MemoirPreviewDTO();
+            memoirPreviewDTO.setMemoirDate(memoir.getMemoirDate());
+            //Optional<MemoirImg> memoirImg = memoirImgRepository.findByImgUrlLike("%"+ String.valueOf(memoir.getMemoirDate()) + "%");
+            Optional<MemoirImg> memoirImg = memoirImgRepository.findByImgUrlContains(String.valueOf(memoir.getMemoirDate()));
+
+            if(memoirImg.isPresent()){
+                memoirPreviewDTO.setPreviewImg(memoirImg.get().getImgUrl());
+            }
+            memoirPreviewDTOList.add(memoirPreviewDTO);
+        }
+
+        userMemoirDTO.setPreviewList(memoirPreviewDTOList);
+
+        return userMemoirDTO;
     }
 
 }

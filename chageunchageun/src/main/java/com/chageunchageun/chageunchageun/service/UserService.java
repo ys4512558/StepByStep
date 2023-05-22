@@ -42,7 +42,7 @@ public class UserService {
     /**
      * 회원가입 시 해당 유저의 이메일을 통해 폴더를 생성
      * email 폴더
-     * Routine, Todo, Memoir 하위 폴더 생성
+     * Routine 하위 폴더 생성
      * @param email
      * @return
      */
@@ -51,19 +51,18 @@ public class UserService {
         //내 컴퓨터에 저장 경로
         //final String userPath = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/" + email;
         //프로젝트 내부 리소스 경로
-        final String userPath =
-                "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/" + email;
+        //노트북 경로
+        /*final String userPath =
+                "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/" + email;*/
 
+        final String userPath =
+                "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/chageunchageun/chageunchageun/src/main/resources/User/" + email;
         File Folder = new File(userPath);
-        //File RotineFolder = new File(userPath + "/Routine");
-        //File TodoFolder = new File(userPath + "/Todo");
         File MemoirFolder = new File(userPath + "/Memoir");
 
         if (!Folder.exists()) {
             try{
                 Folder.mkdir();
-                //RotineFolder.mkdir();
-                //TodoFolder.mkdir();
                 MemoirFolder.mkdir();
             }
             catch(Exception e){

@@ -2,6 +2,7 @@ package com.chageunchageun.chageunchageun.controller;
 
 import com.chageunchageun.chageunchageun.data.dto.MemoirDTO;
 import com.chageunchageun.chageunchageun.data.dto.MemoirSaveDTO;
+import com.chageunchageun.chageunchageun.data.dto.UserMemoirDTO;
 import com.chageunchageun.chageunchageun.service.MemoirService;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -97,5 +98,14 @@ public class MemoirController {
         while ((length = inputStream.read(buffer)) != -1) {
             outputStream.write(buffer, 0, length);
         }
+    }
+
+
+    @GetMapping(value = "Preview")
+    public ResponseEntity<UserMemoirDTO> preview(@RequestParam String email){
+        UserMemoirDTO userMemoirDTO = memoirService.previewMemoir(email);
+
+        return ResponseEntity.status(HttpStatus.OK).body(userMemoirDTO);
+
     }
 }
