@@ -83,8 +83,11 @@ public class MemoirController {
                     @PathVariable("img") String img) throws IOException {
         ServletOutputStream outputStream = response.getOutputStream();
 
-        String filePath = "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/"
+        /*String filePath = "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/"
                 + email + "/Memoir/" + memoirDate + "/" + img;
+        */
+        String filePath = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/chageunchageun/chageunchageun/src/main/resources/User/" +
+                email + "/Memoir/" +  memoirDate + "/" + img;
 
         File file = new File(filePath);
         if (!file.exists()) {

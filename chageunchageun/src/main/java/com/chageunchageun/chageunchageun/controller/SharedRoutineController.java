@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/shareRoutine/")
-public class SharedRoutinController {
+public class SharedRoutineController {
 
     @Autowired
     SharedRoutineService sharedRoutineService;
@@ -46,5 +46,11 @@ public class SharedRoutinController {
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
+    @GetMapping(value = "selectMbti")
+    public ResponseEntity<List<SharedRoutineDTO>> selectMbti(@RequestParam String mbti){
+        List<SharedRoutineDTO> sharedRoutineDTOS = sharedRoutineService.selectMbti(mbti);
+
+        return ResponseEntity.status(HttpStatus.OK).body(sharedRoutineDTOS);
+    }
     
 }

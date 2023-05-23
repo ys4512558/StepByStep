@@ -42,7 +42,7 @@ public class UserService {
     /**
      * 회원가입 시 해당 유저의 이메일을 통해 폴더를 생성
      * email 폴더
-     * Routine 하위 폴더 생성
+     * Routine, Todo, Memoir 하위 폴더 생성
      * @param email
      * @return
      */

@@ -151,6 +151,40 @@ public class SharedRoutineService {
 
     }
 
+    public List<SharedRoutineDTO> selectMbti(String mbtiParam){
+
+        List<Object[]> sharedRoutines = sharedRoutineRepository.getSharedRoutinesWithUserMbti(mbtiParam);
+        List<SharedRoutineDTO> sharedRoutineDTOS = new ArrayList<SharedRoutineDTO>();
+
+        for(Object[] result : sharedRoutines){
+
+            String mbti = (String) result[0];
+            String email = (String) result[1];
+            String name = (String) result[2];
+            SharedRoutine sharedRoutine = (SharedRoutine) result[3];
+
+            SharedRoutineDTO sharedRoutineDTO = new SharedRoutineDTO();
+
+            //DTO초기화
+            sharedRoutineDTO.setIdx(sharedRoutine.getIdx());
+            sharedRoutineDTO.setEmail(email);
+            sharedRoutineDTO.setMbti(mbti);
+            sharedRoutineDTO.setName(name);
+            sharedRoutineDTO.setCategory(sharedRoutine.getCategory());
+            sharedRoutineDTO.setItemName(sharedRoutine.getItemName());
+            sharedRoutineDTO.setItemDisc(sharedRoutine.getItemDisc());
+            sharedRoutineDTO.setItemExplain(sharedRoutine.getItemExplain());
+            sharedRoutineDTO.setStart(sharedRoutine.getStart());
+            sharedRoutineDTO.setEnd(sharedRoutine.getEnd());
+            sharedRoutineDTO.setCount(sharedRoutine.getCount());
+            sharedRoutineDTO.setSharedDate(sharedRoutine.getSharedDate());
+
+            sharedRoutineDTOS.add(sharedRoutineDTO);
+        }
+
+        return sharedRoutineDTOS;
+
+    }
     /**
      * 루틴 공유시 count++ 메서드
      * @param idx

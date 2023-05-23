@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
+/*
+
 @Component
 public class InitData implements ApplicationRunner {
     @Autowired
@@ -27,9 +29,11 @@ public class InitData implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        /**
+        */
+/**
          * 유저 데이터 생성
-         */
+         *//*
+
 
         for (int i = 0; i < 5; i++) {
             User user = new User();
@@ -40,9 +44,11 @@ public class InitData implements ApplicationRunner {
             userRepository.save(user);
         }
 
-        /**
+        */
+/**
          * 루틴 데이터 생성
-         */
+         *//*
+
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 3; j++) {
                 User user = userRepository.getReferenceById(String.valueOf(i));
@@ -66,9 +72,11 @@ public class InitData implements ApplicationRunner {
             }
         }
 
-        /**
+        */
+/**
          * 공유 루틴 데이터 생성
-         */
+         *//*
+
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 1; j++) {
                 User user = userRepository.getReferenceById(String.valueOf(i));
@@ -95,10 +103,13 @@ public class InitData implements ApplicationRunner {
             }
         }
 
-        /**
+        */
+/**
          *  회고 데이터 생성
-         */
-        /*
+         *//*
+
+        */
+/*
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 3; j++) {
                 User user = userRepository.getReferenceById(String.valueOf(i));
@@ -109,7 +120,9 @@ public class InitData implements ApplicationRunner {
 
                 memoirRepository.save(memoir);
             }
-        }*/
+        }*//*
+
 
     }
 }
+*/
