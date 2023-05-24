@@ -54,4 +54,13 @@ public class RoutineController {
         return ResponseEntity.status(HttpStatus.OK).body(routinesDTO);
     }
 
+    @PutMapping(value = "update/{email}")
+    public ResponseEntity<HttpStatus> updateRoutine(@PathVariable String email,
+                                                    @RequestBody String updateRoutine){
+
+        routineService.updateRoutine(updateRoutine);
+
+        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
+    }
+
 }

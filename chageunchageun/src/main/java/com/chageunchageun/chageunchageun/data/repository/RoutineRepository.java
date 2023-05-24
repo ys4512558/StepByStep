@@ -4,6 +4,7 @@ import com.chageunchageun.chageunchageun.data.entity.Routine;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RoutineRepository extends JpaRepository<Routine, Integer> {
     /**
@@ -14,4 +15,6 @@ public interface RoutineRepository extends JpaRepository<Routine, Integer> {
      * @return
      */
     List<Routine> findByUserEmailAndDay(String email, String day);
+
+    Optional<Routine> findByUserEmailAndItemNameAndItemDiscAndDay(String email, String item_name, String item_disc, String day);
 }

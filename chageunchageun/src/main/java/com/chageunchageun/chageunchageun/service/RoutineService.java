@@ -19,6 +19,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoutineService {
@@ -353,6 +354,55 @@ public class RoutineService {
         routinesDTO.setDay(dayParam);
 
         return routinesDTO;
+    }
+
+    public void updateRoutine(String updateRoutine) {
+
+        JSONParser parser = new JSONParser();
+
+        String email;
+        String item_name;
+        String item_disc;
+        String day;
+
+        String item_nameRp;
+        String item_discRp;
+        String startRp;
+        String endRp;
+
+
+        try {
+            JSONObject jsonObject = (JSONObject) parser.parse(updateRoutine);
+
+            email = (String) jsonObject.get("email");
+            item_name = (String) jsonObject.get("item_name");
+            item_disc = (String) jsonObject.get("item_disc");
+            day = (String) jsonObject.get("day");
+            item_nameRp = (String) jsonObject.get("item_nameRp");
+            item_discRp = (String) jsonObject.get("item_discRp");
+            startRp = (String) jsonObject.get("startRp");
+            endRp = (String) jsonObject.get("endRp");
+
+
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        Optional<Routine> routineOptionaline = routineRepository.findByUserEmailAndItemNameAndItemDiscAndDay(email, item_name, item_disc, day);
+
+        Routine routine = new Routine();
+
+        if(routineOptionaline.isPresent()){
+            routine = routineOptionaline.get();
+        }
+
+        routine.setItemName(item_nameRp);
+        routine.setItemDisc(item_discRp);
+        routine.setStart(startRp);
+        routine.setEnd(endRp);
+
+        routineRepository.save(routine);
+
     }
 
 }
