@@ -42,7 +42,7 @@ public class SharedRoutine {
     private String end;
 
     @Column
-    private Integer count;
+    private int count;
 
     @Column
     private LocalDate sharedDate;

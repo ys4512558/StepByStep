@@ -4,6 +4,7 @@ package com.chageunchageun.chageunchageun.controller;
 import com.chageunchageun.chageunchageun.data.dto.MemoirSaveDTO;
 import com.chageunchageun.chageunchageun.data.dto.RoutineDTO;
 import com.chageunchageun.chageunchageun.data.dto.RoutinesDTO;
+import com.chageunchageun.chageunchageun.data.dto.UpdateRoutineDTO;
 import com.chageunchageun.chageunchageun.service.RoutineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,18 +21,23 @@ public class RoutineController {
     RoutineService routineService;
 
 
-    /**
-     * 루틴 저장
-     * @param routines
-     * @return
-     */
-    @PostMapping(value = "save")
+
+    /*@PostMapping(value = "save")
     public ResponseEntity<HttpStatus> saveRoutines(@RequestBody String routines){
 
-        //routineService.saveRoutines(routines);
         routineService.saveRoutine(routines);
 
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
+    }*/
+    /**
+     * 루틴 저장
+     * @param routinesDTO
+     * @return
+     */
+    @PostMapping(value = "save")
+    public void saveRoutinesDTO(@RequestBody RoutinesDTO routinesDTO){
+
+        routineService.saveRoutineDTO(routinesDTO);
     }
 
 
@@ -46,21 +52,17 @@ public class RoutineController {
             @RequestParam String email,
             @RequestParam String day){
 
-        //RoutinesDTO routinesDTO = routineService.selectRoutines(email, day);
-
         RoutinesDTO routinesDTO = routineService.selectRoutine(email, day);
         System.out.println(routinesDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(routinesDTO);
     }
 
-    @PutMapping(value = "update/{email}")
-    public ResponseEntity<HttpStatus> updateRoutine(@PathVariable String email,
-                                                    @RequestBody String updateRoutine){
+    @PatchMapping(value = "update/{email}")
+    public void updateRoutine(@PathVariable String email,
+                              @RequestBody UpdateRoutineDTO updateRoutine){
 
-        routineService.updateRoutine(updateRoutine);
-
-        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
+        routineService.updateRoutine(email, updateRoutine);
     }
 
 }

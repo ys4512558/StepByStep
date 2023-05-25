@@ -17,11 +17,9 @@ public class UserController {
     UserService userService;
 
     @PostMapping(value = "SignUp")
-    public ResponseEntity<HttpStatus> SignUp(@RequestBody HashMap<String, Object> userInfo){
+    public void SignUp(@RequestBody UserDTO userDTO){
 
-        userService.saveUserInfo(userInfo);
-
-        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
+        userService.saveUserInfo(userDTO);
     }
 
     @GetMapping(value = "userInfo")
@@ -29,6 +27,15 @@ public class UserController {
 
         UserDTO userDTO = userService.selectUser(email);
         return ResponseEntity.status(HttpStatus.OK).body(userDTO);
+    }
+
+    @PatchMapping(value = "userLevel/{email}")
+    public void levelUp(@PathVariable String email,
+                        @RequestParam int level,
+                        @RequestParam int exp){
+
+        userService.levelUp(email, level, exp);
+
     }
 
 

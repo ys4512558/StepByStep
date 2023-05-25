@@ -5,7 +5,6 @@ import lombok.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "routine")
@@ -34,6 +33,36 @@ public class Routine {
     @Column
     private String end;
 
+    public Routine(User user, String day, String itemName, String itemDisc, String start, String end) {
+        this.user = user;
+        this.day = day;
+        this.itemName = itemName;
+        this.itemDisc = itemDisc;
+        this.start = start;
+        this.end = end;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public void setItemDisc(String itemDisc) {
+        this.itemDisc = itemDisc;
+    }
+
+    public void setStart(String start) {
+        this.start = start;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
+    }
 }

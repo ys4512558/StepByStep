@@ -38,7 +38,7 @@ public class SharedRoutineController {
     /**
      * 루틴 공유 시 공유 카운트 ++
      */
-    @PutMapping(value = "shareCount/{idx}")
+    @PatchMapping(value = "shareCount/{idx}")
     public ResponseEntity<HttpStatus> updateCount(@PathVariable int idx){
 
         sharedRoutineService.updateRoutine(idx);

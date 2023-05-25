@@ -193,9 +193,9 @@ public class SharedRoutineService {
     public void updateRoutine(Integer idx) {
         SharedRoutine sharedRoutine = sharedRoutineRepository.findById(idx).orElseThrow(
                 ()-> new IllegalArgumentException("수정 실패"));
-        Integer cnt = sharedRoutine.getCount() + 1;
+        int cnt = sharedRoutine.getCount() + 1;
         sharedRoutine.setCount(cnt);
 
-
+        sharedRoutineRepository.save(sharedRoutine);
     }
 }

@@ -5,7 +5,6 @@ import lombok.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "memoir_img")
@@ -22,4 +21,8 @@ public class MemoirImg {
     @Column
     private String imgUrl;
 
+    public MemoirImg(Memoir memoir, String imgUrl) {
+        this.memoir = memoir;
+        this.imgUrl = imgUrl;
+    }
 }

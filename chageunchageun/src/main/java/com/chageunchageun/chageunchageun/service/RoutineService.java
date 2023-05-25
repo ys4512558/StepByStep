@@ -1,5 +1,6 @@
 package com.chageunchageun.chageunchageun.service;
 
+import com.chageunchageun.chageunchageun.data.dto.UpdateRoutineDTO;
 import com.chageunchageun.chageunchageun.data.entity.Routine;
 import com.chageunchageun.chageunchageun.data.entity.User;
 import com.chageunchageun.chageunchageun.data.dto.RoutineDTO;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,194 +73,98 @@ public class RoutineService {
         }
     }
 
-    public List<HashMap<String, Object>> jsonFile (String jsonData) {
+    public void saveRoutineDTO(RoutinesDTO routinesDTO){
+        String email = routinesDTO.getEmail();
+        String day = routinesDTO.getDay();
+        User user = userRepository.getReferenceById(email);
 
-        final String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/test.json";
+        List<RoutineDTO> routineDTOS = routinesDTO.getRoutines();
 
-        JSONParser parser = new JSONParser();
+        List<Routine> routines = new ArrayList<>();
 
-        List<HashMap<String,Object>> list = new ArrayList<HashMap<String ,Object>>();
+        for(RoutineDTO routineDTO : routineDTOS){
+            Routine routine = new Routine(user, day,
+                    routineDTO.getItemName(),
+                    routineDTO.getItemDisc(),
+                    routineDTO.getStart(),
+                    routineDTO.getEnd());
 
-        try {
-            JSONObject jsonObject = (JSONObject) parser.parse(jsonData);
-
-            //1. JSONArray의 Routines부분만 저장
-            JSONArray routinesArray = (JSONArray) jsonObject.get("Routines");
-
-            for (Object object : routinesArray) {
-                JSONObject routineObject = (JSONObject) object;
-
-                String itemDisc = (String) routineObject.get("itemDisc");
-                String itemName = (String) routineObject.get("itemName");
-                String start = (String) routineObject.get("start");
-                String end = (String) routineObject.get("end");
-
-                HashMap<String ,Object> map = new HashMap<String , Object>();
-                map.put("itemDisc", itemDisc);
-                map.put("itemName", itemName);
-                map.put("start", start);
-                map.put("end", end);
-
-                list.add(map);
-            }
-            FileWriter file = new FileWriter(dir);
-            //1.
-            file.write(routinesArray.toJSONString());
-            //file.write(jsonObject.toJSONString());
-            file.flush();
-            file.close();
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        File file = new File(dir);
-
-        return list;
-    }
-
-    public void jsonFile2 (String jsonData) {
-
-        //final String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/test.json";
-        final String dir =
-                "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/test.json";
-        JSONParser parser = new JSONParser();
-
-        List<RoutineDTO> list = new ArrayList<RoutineDTO>();
-
-        try {
-            JSONObject jsonObject = (JSONObject) parser.parse(jsonData);
-
-            //1. JSONArray의 Routines부분만 저장
-            JSONArray routinesArray = (JSONArray) jsonObject.get("Routine");
-
-            String email = (String) jsonObject.get("email");
-            String day = (String) jsonObject.get("day");
-
-            for (Object object : routinesArray) {
-                JSONObject routineObject = (JSONObject) object;
-
-                String itemDisc = (String) routineObject.get("itemDisc");
-                String itemName = (String) routineObject.get("itemName");
-                String start = (String) routineObject.get("start");
-                String end = (String) routineObject.get("end");
-
-                RoutineDTO routineDTO = new RoutineDTO();
-                routineDTO.setItemDisc(itemDisc);
-                routineDTO.setItemName(itemName);
-                routineDTO.setEnd(end);
-                routineDTO.setStart(start);
-
-                list.add(routineDTO);
-            }
-            FileWriter file = new FileWriter(dir);
-
-            file.write(routinesArray.toJSONString());
-            file.flush();
-            file.close();
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            routines.add(routine);
+            routineRepository.save(routine);
         }
     }
-
 
     /**
-     * 문자열 routines를 @RequestBody에서 받음
-     * Json으로 파싱 후 파일에 저장
-     * 파일은 Json속 email, day를 통해 폴더 해당 폴더에 저장
-     * @param routines
+     * DB에서 이메일, 요일로 검색
+     * 해당 데이터 RoutineDTO에 저장
+     * ArrayList<RoutineDTO>에 저장
+     * RoutinesDTO에 이메일, 요일, List<RoutineDTO>저장
+     * RoutinesDTO 리턴
+     * @param emailParam
+     * @param dayParam
+     * @return
      */
-    public void saveRoutines(String routines){
-        //String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/";
-        String dir =
-                "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/";
+    public RoutinesDTO selectRoutine(String emailParam, String dayParam){
 
-        JSONParser parser = new JSONParser();
+        List<Routine> routines = routineRepository.findByUserEmailAndDay(emailParam, dayParam);
 
-        try {
-            JSONObject jsonObject = (JSONObject) parser.parse(routines);
-            String email = (String) jsonObject.get("email");
-            String day = (String) jsonObject.get("day");
+        List<RoutineDTO> routineDTOS = new ArrayList<RoutineDTO>();
 
-            dir +=  email + "/Memoir/" + day + "/test.json";
-            FileWriter file = new FileWriter(dir);
-
-            file.write(jsonObject.toJSONString());
-            file.flush();
-            file.close();
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    //.json파일 읽어서 다시 전송
-    public RoutinesDTO selectRoutines(String emailParam, String dayParam){
-        //final String dir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/" + emailParam + "/Routine/" + dayParam + "/test.json";
-
-        final String dir = "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/"
-                + emailParam + "/Routine/" + dayParam + "/test.json";
-
-        JSONParser parser = new JSONParser();
-        JSONArray routinesArray;
-        String email;
-        String day;
-        try {
-            FileReader fileReader = new FileReader(dir);
-            JSONObject jsonObject = (JSONObject) parser.parse(fileReader);
-
-            routinesArray = (JSONArray) jsonObject.get("Routine");
-            email = (String) jsonObject.get("email");
-            day = (String) jsonObject.get("day");
-
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-
-        List<RoutineDTO> routines = new ArrayList<RoutineDTO>();
-
-        for (Object object : routinesArray) {
-            JSONObject routineObject = (JSONObject) object;
-
-            String itemDisc = (String) routineObject.get("itemDisc");
-            String itemName = (String) routineObject.get("itemName");
-            String start = (String) routineObject.get("start");
-            String end = (String) routineObject.get("end");
+        for (Routine routine : routines) {
 
             RoutineDTO routineDTO = new RoutineDTO();
-            routineDTO.setItemDisc(itemDisc);
-            routineDTO.setItemName(itemName);
-            routineDTO.setEnd(end);
-            routineDTO.setStart(start);
+            routineDTO.setItemDisc(routine.getItemDisc());
+            routineDTO.setItemName(routine.getItemName());
+            routineDTO.setEnd(routine.getEnd());
+            routineDTO.setStart(routine.getStart());
 
-            routines.add(routineDTO);
+            routineDTOS.add(routineDTO);
         }
 
         RoutinesDTO routinesDTO = new RoutinesDTO();
-        routinesDTO.setRoutines(routines);
-        routinesDTO.setEmail(email);
-        routinesDTO.setDay(day);
+        routinesDTO.setRoutines(routineDTOS);
+        routinesDTO.setEmail(emailParam);
+        routinesDTO.setDay(dayParam);
 
         return routinesDTO;
     }
 
     /**
+     * 이메일, 수정전 이름, 설명, 요일을 받아서
+     * 이름, 설명, 시작시간, 종료시간을 업데이트
+     * @param updateRoutine
+     */
+    public void updateRoutine(String email, UpdateRoutineDTO updateRoutine) {
+
+        User user = userRepository.getReferenceById(email);
+
+        String item_name = updateRoutine.getItem_name();
+        String item_disc = updateRoutine.getItem_disc();
+        String day = updateRoutine.getDay();
+
+        Optional<Routine> routineOptionaline = routineRepository.findByUserEmailAndItemNameAndItemDiscAndDay(user.getEmail(), item_name, item_disc, day);
+        Routine routine = new Routine();
+
+        if(routineOptionaline.isPresent()){
+            routine = routineOptionaline.get();
+
+            routine.setItemName(updateRoutine.getItem_nameRp());
+            routine.setItemDisc(updateRoutine.getItem_discRp());
+            routine.setStart(updateRoutine.getStartRp());
+            routine.setEnd(updateRoutine.getEndRp());
+
+            routineRepository.save(routine);
+        }
+    }
+
+
+    /**
+     * DTO를 사용하지 않을 경우
      * 문자열 routines를 @RequestBody에서 받음
      * Json으로 파싱 후 DB에 저장
      * @param routines
      */
-    public void saveRoutine(String routines){
+    public void saveJsonRoutine(String routines){
         System.out.println(routines);
         JSONParser parser = new JSONParser();
 
@@ -322,45 +228,16 @@ public class RoutineService {
     }
 
     /**
-     * DB에서 이메일, 요일로 검색
-     * 해당 데이터 RoutineDTO에 저장
-     * ArrayList<RoutineDTO>에 저장
-     * RoutinesDTO에 이메일, 요일, List<RoutineDTO>저장
-     * RoutinesDTO 리턴
-     * @param emailParam
-     * @param dayParam
-     * @return
+     * DTO사용하지 않을 경우
+     * 이메일, 수정전 이름, 설명, 요일을 받아서
+     * 이름, 설명, 시작시간, 종료시간을 업데이트
+     * @param updateRoutine
      */
-    public RoutinesDTO selectRoutine(String emailParam, String dayParam){
-
-        List<Routine> routines = routineRepository.findByUserEmailAndDay(emailParam, dayParam);
-
-        List<RoutineDTO> routineDTOS = new ArrayList<RoutineDTO>();
-
-        for (Routine routine : routines) {
-
-            RoutineDTO routineDTO = new RoutineDTO();
-            routineDTO.setItemDisc(routine.getItemDisc());
-            routineDTO.setItemName(routine.getItemName());
-            routineDTO.setEnd(routine.getEnd());
-            routineDTO.setStart(routine.getStart());
-
-            routineDTOS.add(routineDTO);
-        }
-
-        RoutinesDTO routinesDTO = new RoutinesDTO();
-        routinesDTO.setRoutines(routineDTOS);
-        routinesDTO.setEmail(emailParam);
-        routinesDTO.setDay(dayParam);
-
-        return routinesDTO;
-    }
-
-    public void updateRoutine(String updateRoutine) {
+    public void updateJsonRoutine(String email, String updateRoutine) {
 
         JSONParser parser = new JSONParser();
 
-        String email;
+        //String email;
         String item_name;
         String item_disc;
         String day;
@@ -370,11 +247,10 @@ public class RoutineService {
         String startRp;
         String endRp;
 
-
         try {
             JSONObject jsonObject = (JSONObject) parser.parse(updateRoutine);
 
-            email = (String) jsonObject.get("email");
+            //email = (String) jsonObject.get("email");
             item_name = (String) jsonObject.get("item_name");
             item_disc = (String) jsonObject.get("item_disc");
             day = (String) jsonObject.get("day");
@@ -394,15 +270,13 @@ public class RoutineService {
 
         if(routineOptionaline.isPresent()){
             routine = routineOptionaline.get();
+
+            routine.setItemName(item_nameRp);
+            routine.setItemDisc(item_discRp);
+            routine.setStart(startRp);
+            routine.setEnd(endRp);
+
+            routineRepository.save(routine);
         }
-
-        routine.setItemName(item_nameRp);
-        routine.setItemDisc(item_discRp);
-        routine.setStart(startRp);
-        routine.setEnd(endRp);
-
-        routineRepository.save(routine);
-
     }
-
 }

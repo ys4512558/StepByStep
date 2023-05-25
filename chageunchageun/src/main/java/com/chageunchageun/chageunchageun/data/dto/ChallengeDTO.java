@@ -1,26 +1,21 @@
 package com.chageunchageun.chageunchageun.data.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class ChallengeDTO {
 
-    private String email;
+    String title;
 
-    private String name;
-
-    private String imgUrl;
-
-    private String mbti;
-
-    private int level;
-
-    private int exp;
+    LocalDate completeDate;
 
 }

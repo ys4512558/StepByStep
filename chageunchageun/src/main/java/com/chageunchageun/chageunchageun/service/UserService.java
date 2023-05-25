@@ -20,21 +20,17 @@ public class UserService {
     }
 
 
-    public void saveUserInfo(HashMap<String, Object> userInfo) {
+    public void saveUserInfo(UserDTO userDTO) {
 
-        String email = (String) userInfo.get("email");
-        String name = (String) userInfo.get("name");
-        String imgUrl = (String) userInfo.get("profileImgUrl");
-        String mbti = (String) userInfo.get("mbti");
+
+        String email = userDTO.getEmail();
+        String name = userDTO.getName();
+        String imgUrl = userDTO.getImgUrl();
+        String mbti = userDTO.getMbti();
 
         String userPath = createFolder(email);
 
-        User user = new User();
-        user.setEmail(email);
-        user.setName(name);
-        user.setImgUrl(imgUrl);
-        user.setMbti(mbti);
-        user.setUserPath(userPath);
+        User user = new User(email, name, imgUrl, mbti, userPath);
 
         userRepository.save(user);
     }
@@ -81,8 +77,25 @@ public class UserService {
         userDTO.setName(user.getName());
         userDTO.setMbti(user.getMbti());
         userDTO.setImgUrl(user.getImgUrl());
+        userDTO.setLevel(user.getLevel());
+        userDTO.setExp(user.getExp());
 
         return userDTO;
     }
 
+    /**
+     * 이메일을 받아서
+     * level과 exp를 업데이트
+     * @param email
+     * @param level
+     * @param exp
+     */
+    public void levelUp(String email, int level, int exp){
+        User user = userRepository.getReferenceById(email);
+
+        user.setLevel(level);
+        user.setExp(exp);
+
+        userRepository.save(user);
+    }
 }

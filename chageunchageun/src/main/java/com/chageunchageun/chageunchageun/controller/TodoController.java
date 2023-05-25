@@ -18,11 +18,9 @@ public class TodoController {
     private TodoService todoService;
 
     @PostMapping(value = "save")
-    public ResponseEntity<HttpStatus> saveRoutines(@RequestBody String todos){
+    public void saveRoutines(@RequestBody String todos){
 
         todoService.saveTodo(todos);
-
-        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
 

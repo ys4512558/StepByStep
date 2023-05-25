@@ -55,7 +55,7 @@ public class MemoirController {
     @PostMapping(value = "saveContent")
     public ResponseEntity<HttpStatus> saveMemoirComment(@RequestPart("memoirContent") String memoirContent,
                                                         @RequestPart("image") MultipartFile image){
-        memoirService.saveComment(memoirContent, image);
+        memoirService.saveContent(memoirContent, image);
 
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
@@ -76,20 +76,25 @@ public class MemoirController {
 
     }
 
+    /**
+     * 회고록의 이미지를 보여주기 위한 url
+     * @param response
+     * @param email
+     * @param memoirDate
+     * @param img
+     * @throws IOException
+     */
+
     @GetMapping("img/{email}/{memoirDate}/{img}")
     public void get(HttpServletResponse response,
                     @PathVariable("email") String email,
                     @PathVariable("memoirDate") LocalDate memoirDate,
                     @PathVariable("img") String img) throws IOException {
+
         ServletOutputStream outputStream = response.getOutputStream();
 
-        /*String filePath = "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/"
-                + email + "/Memoir/" + memoirDate + "/" + img;
-        */
-        String filePath = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/chageunchageun/chageunchageun/src/main/resources/User/" +
-                email + "/Memoir/" +  memoirDate + "/" + img;
+        File file = memoirService.imgView(email, memoirDate, img);
 
-        File file = new File(filePath);
         if (!file.exists()) {
             //해당 파일이 존재하지 않을 때 처리
         }
