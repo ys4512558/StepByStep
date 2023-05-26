@@ -1,15 +1,15 @@
 package com.chageunchageun.chageunchageun.service;
 
-import com.chageunchageun.chageunchageun.data.dto.*;
+import com.chageunchageun.chageunchageun.data.dto.Memoir.MemoirDTO;
+import com.chageunchageun.chageunchageun.data.dto.Memoir.MemoirPreviewDTO;
+import com.chageunchageun.chageunchageun.data.dto.Memoir.MemoirSaveDTO;
+import com.chageunchageun.chageunchageun.data.dto.User.UserMemoirDTO;
 import com.chageunchageun.chageunchageun.data.entity.Memoir;
 import com.chageunchageun.chageunchageun.data.entity.MemoirImg;
 import com.chageunchageun.chageunchageun.data.entity.User;
 import com.chageunchageun.chageunchageun.data.repository.MemoirImgRepository;
 import com.chageunchageun.chageunchageun.data.repository.MemoirRepository;
 import com.chageunchageun.chageunchageun.data.repository.UserRepository;
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.http.HttpServletResponse;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;

@@ -1,7 +1,7 @@
 package com.chageunchageun.chageunchageun.controller;
 
 
-import com.chageunchageun.chageunchageun.data.dto.ChallengeDTO;
+import com.chageunchageun.chageunchageun.data.dto.Challenge.ChallengeDTO;
 import com.chageunchageun.chageunchageun.service.ChallengeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,5 +42,13 @@ public class ChallengeController {
         List<ChallengeDTO> challengeDTOList = challengeService.completeChallenge(email);
 
         return ResponseEntity.status(HttpStatus.OK).body(challengeDTOList);
+    }
+
+    @DeleteMapping(value = "delete/{email}/{title}")
+    public void deleteChallenge(@PathVariable String email,
+                                @PathVariable String title){
+
+        challengeService.DeleteChallenge(email, title);
+
     }
 }

@@ -1,11 +1,11 @@
 package com.chageunchageun.chageunchageun.service;
 
-import com.chageunchageun.chageunchageun.data.dto.UpdateRoutineDTO;
+import com.chageunchageun.chageunchageun.data.dto.Routine.DeleteRoutineDTO;
+import com.chageunchageun.chageunchageun.data.dto.Routine.UpdateRoutineDTO;
 import com.chageunchageun.chageunchageun.data.entity.Routine;
 import com.chageunchageun.chageunchageun.data.entity.User;
-import com.chageunchageun.chageunchageun.data.dto.RoutineDTO;
-import com.chageunchageun.chageunchageun.data.dto.RoutinesDTO;
-import com.chageunchageun.chageunchageun.data.entity.SharedRoutine;
+import com.chageunchageun.chageunchageun.data.dto.Routine.RoutineDTO;
+import com.chageunchageun.chageunchageun.data.dto.Routine.RoutinesDTO;
 import com.chageunchageun.chageunchageun.data.repository.RoutineRepository;
 import com.chageunchageun.chageunchageun.data.repository.UserRepository;
 import org.json.simple.JSONArray;
@@ -17,9 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -154,6 +152,24 @@ public class RoutineService {
             routine.setEnd(updateRoutine.getEndRp());
 
             routineRepository.save(routine);
+        }
+    }
+
+    public void deleteRoutine(String email, DeleteRoutineDTO deleteRoutineDTO){
+
+        User user = userRepository.getReferenceById(email);
+
+        String item_name = deleteRoutineDTO.getItem_name();
+        String item_disc = deleteRoutineDTO.getItem_disc();
+        String day = deleteRoutineDTO.getDay();
+
+        Optional<Routine> routineOptional = routineRepository.findByUserEmailAndItemNameAndItemDiscAndDay(user.getEmail(),
+                item_name, item_disc, day);
+
+        if (routineOptional.isPresent()) {
+            Routine routine = routineOptional.get();
+
+            routineRepository.delete(routine);
         }
     }
 

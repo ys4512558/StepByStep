@@ -1,6 +1,6 @@
 package com.chageunchageun.chageunchageun.service;
 
-import com.chageunchageun.chageunchageun.data.dto.ChallengeDTO;
+import com.chageunchageun.chageunchageun.data.dto.Challenge.ChallengeDTO;
 import com.chageunchageun.chageunchageun.data.entity.Challenge;
 import com.chageunchageun.chageunchageun.data.entity.User;
 import com.chageunchageun.chageunchageun.data.repository.ChallengeRepository;
@@ -112,6 +112,19 @@ public class ChallengeService {
         }
 
         return challengeDTOS;
+    }
+
+    public void DeleteChallenge(String email, String title){
+
+        User user = userRepository.getReferenceById(email);
+
+        Optional<Challenge> challengeOptional = challengeRepository.findByUserEmailAndTitle(user.getEmail(), title);
+
+        if(challengeOptional.isPresent()){
+            Challenge challenge = challengeOptional.get();
+
+            challengeRepository.delete(challenge);
+        }
 
     }
 }

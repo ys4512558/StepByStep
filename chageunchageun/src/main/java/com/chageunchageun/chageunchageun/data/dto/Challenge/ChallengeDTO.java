@@ -1,4 +1,4 @@
-package com.chageunchageun.chageunchageun.data.dto;
+package com.chageunchageun.chageunchageun.data.dto.Challenge;
 
 
 import lombok.AllArgsConstructor;
@@ -12,14 +12,10 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemoirContentDTO {
-    String email;
-
-    LocalDate date;
+public class ChallengeDTO {
 
     String title;
 
-    String mood;
+    LocalDate completeDate;
 
-    String comment;
 }

@@ -1,7 +1,7 @@
 package com.chageunchageun.chageunchageun.service;
 
 import com.chageunchageun.chageunchageun.data.entity.User;
-import com.chageunchageun.chageunchageun.data.dto.SharedRoutineDTO;
+import com.chageunchageun.chageunchageun.data.dto.Routine.SharedRoutineDTO;
 import com.chageunchageun.chageunchageun.data.entity.SharedRoutine;
 import com.chageunchageun.chageunchageun.data.repository.SharedRoutineRepository;
 import com.chageunchageun.chageunchageun.data.repository.UserRepository;

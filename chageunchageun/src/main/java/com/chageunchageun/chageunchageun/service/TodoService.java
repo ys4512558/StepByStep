@@ -1,15 +1,13 @@
 package com.chageunchageun.chageunchageun.service;
 
-import com.chageunchageun.chageunchageun.data.dto.TodoDTO;
-import com.chageunchageun.chageunchageun.data.dto.TodosDTO;
+import com.chageunchageun.chageunchageun.data.dto.Todo.DeleteTodoDTO;
+import com.chageunchageun.chageunchageun.data.dto.Todo.TodoDTO;
+import com.chageunchageun.chageunchageun.data.dto.Todo.TodosDTO;
+import com.chageunchageun.chageunchageun.data.dto.Todo.UpdateTodoDTO;
 import com.chageunchageun.chageunchageun.data.entity.Todo;
 import com.chageunchageun.chageunchageun.data.entity.User;
 import com.chageunchageun.chageunchageun.data.repository.TodoRepository;
 import com.chageunchageun.chageunchageun.data.repository.UserRepository;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +15,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TodoService {
@@ -66,75 +65,53 @@ public class TodoService {
     }
 
     /**
-     *
-     */
-    /**
      * 문자열 Todos를 @RequestBody에서 받음
      * Json으로 파싱 후 DB에 저장
-     * @param todos
+     * @param todosDTO
      */
-    public void saveTodo(String todos){
-        System.out.println(todos);
-        JSONParser parser = new JSONParser();
+    public void saveTodo(TodosDTO todosDTO){
 
-        String email = null;
-        String day = null;
-        JSONArray todoArray = null;
+        String email = todosDTO.getEmail();
+        User user = userRepository.getReferenceById(email);
 
-        try {
-            JSONObject jsonObject = (JSONObject) parser.parse(todos);
-            email = (String) jsonObject.get("email");
-            todoArray = (JSONArray) jsonObject.get("Todo");
+        List<TodoDTO> todoDTOS = todosDTO.getTodos();
 
-        } catch (ParseException e) {
-            e.printStackTrace();
+        List<Todo> todos = new ArrayList<>();
+
+        for(TodoDTO todoDTO : todoDTOS) {
+            Todo todo = new Todo(user,
+                    todoDTO.getTodo_name(),
+                    todoDTO.getTodo_disc(),
+                    todoDTO.getOne_dff(),
+                    todoDTO.getStart_date(),
+                    todoDTO.getEnd_date());
+
+            todos.add(todo);
+            todoRepository.save(todo);
         }
+    }
+
+    public void updateTodo(String email, UpdateTodoDTO updateTodoDTO){
 
         User user = userRepository.getReferenceById(email);
 
-        user.setTodos(parseJsonArray(todoArray));
+        String todo_name = updateTodoDTO.getTodo_name();
+        String todo_disc = updateTodoDTO.getTodo_disc();
 
-        for(Todo todo : user.getTodos()){
-            todo.setUser(user);
+        Optional<Todo> todoOptional = todoRepository.findByUserEmailAndTodoNameAndTodoDisc(user.getEmail(),
+                todo_name, todo_disc);
+
+        if(todoOptional.isPresent()){
+            Todo todo = todoOptional.get();
+
+            todo.setTodoName(updateTodoDTO.getTodo_nameRp());
+            todo.setTodoDisc(updateTodoDTO.getTodo_discRp());
+            todo.setOneOff(updateTodoDTO.getOne_off());
+            todo.setStartDate(updateTodoDTO.getStart_date());
+            todo.setEndDate(updateTodoDTO.getEnd_date());
+
             todoRepository.save(todo);
         }
-
-    }
-
-    /**
-     * JSONArray를 엔티티 List로 변환(파싱) 후 반환
-     *
-     */
-
-    public List<Todo> parseJsonArray(JSONArray todoArray){
-
-        //JSONArray에 들어갈 내용들
-        String todoName;
-        String todoDisc;
-        LocalDate startDate;
-        LocalDate endDate;
-        Boolean repeat;
-
-        List<Todo> list = new ArrayList<Todo>();
-        for(Object object : todoArray){
-            JSONObject todoObject = (JSONObject) object;
-
-            todoName = (String) todoObject.get("todoName");
-            todoDisc = (String) todoObject.get("todoDisc");
-            startDate =  LocalDate.parse((String) todoObject.get("startDate"));
-            endDate = LocalDate.parse((String) todoObject.get("endDate"));
-            repeat = Boolean.parseBoolean((String)todoObject.get("oneOff"));
-
-            Todo todo = new Todo();
-            todo.setTodoName(todoName);
-            todo.setTodoDisc(todoDisc);
-            todo.setStartDate(startDate);
-            todo.setEndDate(endDate);
-            todo.setOneOff(repeat);
-
-            list.add(todo);
-        }
-        return list;
     }
 
     /**
@@ -147,6 +124,7 @@ public class TodoService {
      * @param dateParam
      * @return
      */
+
     public TodosDTO selectTodo(String emailParam, LocalDate dateParam){
 
         List<Todo> todos = todoRepository.findByUserEmailAndStartDateLessThanEqualAndEndDateGreaterThanEqual(emailParam, dateParam, dateParam);
@@ -156,11 +134,11 @@ public class TodoService {
         for (Todo todo : todos) {
 
             TodoDTO todoDTO = new TodoDTO();
-            todoDTO.setTodoName(todo.getTodoName());
-            todoDTO.setTodoDisc(todo.getTodoDisc());
-            todoDTO.setStartDate(todo.getStartDate());
-            todoDTO.setEndDate(todo.getEndDate());
-            todoDTO.setOneOff(todo.getOneOff());
+            todoDTO.setTodo_name(todo.getTodoName());
+            todoDTO.setTodo_disc(todo.getTodoDisc());
+            todoDTO.setStart_date(todo.getStartDate());
+            todoDTO.setEnd_date(todo.getEndDate());
+            todoDTO.setOne_dff(todo.getOneOff());
 
             todoDTOS.add(todoDTO);
         }
@@ -170,5 +148,22 @@ public class TodoService {
         todosDTO.setEmail(emailParam);
 
         return todosDTO;
+    }
+
+    public void completeTodo(String email, DeleteTodoDTO deleteTodoDTO){
+
+        User user = userRepository.getReferenceById(email);
+
+        String todo_name = deleteTodoDTO.getTodo_name();
+        String todo_disc = deleteTodoDTO.getTodo_disc();
+
+        Optional<Todo> todoOptional = todoRepository.findByUserEmailAndTodoNameAndTodoDisc(user.getEmail(), todo_name, todo_disc);
+
+        if(todoOptional.isPresent()){
+            Todo todo = todoOptional.get();
+
+            todoRepository.delete(todo);
+        }
+
     }
 }

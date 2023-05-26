@@ -1,4 +1,4 @@
-package com.chageunchageun.chageunchageun.data.dto;
+package com.chageunchageun.chageunchageun.data.dto.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

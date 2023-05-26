@@ -1,6 +1,6 @@
 package com.chageunchageun.chageunchageun.controller;
 
-import com.chageunchageun.chageunchageun.data.dto.SharedRoutineDTO;
+import com.chageunchageun.chageunchageun.data.dto.Routine.SharedRoutineDTO;
 import com.chageunchageun.chageunchageun.service.SharedRoutineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,11 +39,9 @@ public class SharedRoutineController {
      * 루틴 공유 시 공유 카운트 ++
      */
     @PatchMapping(value = "shareCount/{idx}")
-    public ResponseEntity<HttpStatus> updateCount(@PathVariable int idx){
+    public void updateCount(@PathVariable int idx){
 
         sharedRoutineService.updateRoutine(idx);
-
-        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
     @GetMapping(value = "selectMbti")

@@ -1,4 +1,4 @@
-package com.chageunchageun.chageunchageun.data.dto;
+package com.chageunchageun.chageunchageun.data.dto.Todo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,9 +13,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class TodoDTO {
 
-    private String todoName;
-    private String todoDisc;
-    private LocalDate endDate;
-    private LocalDate startDate;
-    private Boolean oneOff;
+    private String todo_name;
+    private String todo_disc;
+    private LocalDate end_date;
+    private LocalDate start_date;
+    private Boolean one_dff;
 }

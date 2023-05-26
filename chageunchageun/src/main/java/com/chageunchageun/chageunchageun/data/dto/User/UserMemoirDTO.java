@@ -1,5 +1,6 @@
-package com.chageunchageun.chageunchageun.data.dto;
+package com.chageunchageun.chageunchageun.data.dto.User;
 
+import com.chageunchageun.chageunchageun.data.dto.Memoir.MemoirPreviewDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

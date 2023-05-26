@@ -1,4 +1,4 @@
-package com.chageunchageun.chageunchageun.data.dto;
+package com.chageunchageun.chageunchageun.data.dto.Routine;
 
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;

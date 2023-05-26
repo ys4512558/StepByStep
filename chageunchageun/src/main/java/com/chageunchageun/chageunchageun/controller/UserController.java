@@ -1,13 +1,11 @@
 package com.chageunchageun.chageunchageun.controller;
 
-import com.chageunchageun.chageunchageun.data.dto.UserDTO;
+import com.chageunchageun.chageunchageun.data.dto.User.UserDTO;
 import com.chageunchageun.chageunchageun.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/user")

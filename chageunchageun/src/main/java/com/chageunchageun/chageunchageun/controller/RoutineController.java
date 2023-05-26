@@ -1,18 +1,14 @@
 package com.chageunchageun.chageunchageun.controller;
 
 
-import com.chageunchageun.chageunchageun.data.dto.MemoirSaveDTO;
-import com.chageunchageun.chageunchageun.data.dto.RoutineDTO;
-import com.chageunchageun.chageunchageun.data.dto.RoutinesDTO;
-import com.chageunchageun.chageunchageun.data.dto.UpdateRoutineDTO;
+import com.chageunchageun.chageunchageun.data.dto.Routine.DeleteRoutineDTO;
+import com.chageunchageun.chageunchageun.data.dto.Routine.RoutinesDTO;
+import com.chageunchageun.chageunchageun.data.dto.Routine.UpdateRoutineDTO;
 import com.chageunchageun.chageunchageun.service.RoutineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/routine/")
@@ -53,7 +49,6 @@ public class RoutineController {
             @RequestParam String day){
 
         RoutinesDTO routinesDTO = routineService.selectRoutine(email, day);
-        System.out.println(routinesDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(routinesDTO);
     }
@@ -63,6 +58,14 @@ public class RoutineController {
                               @RequestBody UpdateRoutineDTO updateRoutine){
 
         routineService.updateRoutine(email, updateRoutine);
+    }
+
+    @DeleteMapping(value = "delete/{email}")
+    public void deleteRoutine(@PathVariable String email,
+                              @RequestBody DeleteRoutineDTO deleteRoutineDTO){
+
+        routineService.deleteRoutine(email, deleteRoutineDTO);
+
     }
 
 }
