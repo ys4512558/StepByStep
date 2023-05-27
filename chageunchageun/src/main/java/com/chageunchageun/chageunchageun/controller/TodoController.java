@@ -58,10 +58,12 @@ public class TodoController {
     }
 
     @DeleteMapping(value = "complete/{email}")
-    public void completeTodo(@PathVariable String email,
+    public ResponseEntity<HttpStatus> completeTodo(@PathVariable String email,
                              @RequestBody DeleteTodoDTO deleteTodoDTO){
 
         todoService.completeTodo(email, deleteTodoDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
 
     }
 }

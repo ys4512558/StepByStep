@@ -16,24 +16,18 @@ public class RoutineController {
     @Autowired
     RoutineService routineService;
 
-
-
-    /*@PostMapping(value = "save")
-    public ResponseEntity<HttpStatus> saveRoutines(@RequestBody String routines){
-
-        routineService.saveRoutine(routines);
-
-        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
-    }*/
     /**
      * 루틴 저장
+     *
      * @param routinesDTO
      * @return
      */
     @PostMapping(value = "save")
-    public void saveRoutinesDTO(@RequestBody RoutinesDTO routinesDTO){
+    public ResponseEntity<HttpStatus> saveRoutinesDTO(@RequestBody RoutinesDTO routinesDTO){
 
         routineService.saveRoutineDTO(routinesDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
 
@@ -61,11 +55,12 @@ public class RoutineController {
     }
 
     @DeleteMapping(value = "delete/{email}")
-    public void deleteRoutine(@PathVariable String email,
-                              @RequestBody DeleteRoutineDTO deleteRoutineDTO){
+    public ResponseEntity<HttpStatus> deleteRoutine(@PathVariable String email,
+                                                    @RequestBody DeleteRoutineDTO deleteRoutineDTO){
 
         routineService.deleteRoutine(email, deleteRoutineDTO);
 
+        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
 }

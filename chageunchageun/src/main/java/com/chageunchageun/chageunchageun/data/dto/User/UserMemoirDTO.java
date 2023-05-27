@@ -21,6 +21,10 @@ public class UserMemoirDTO {
 
     private String mbti;
 
+    private String level;
+
+    private String exp;
+
     private List<MemoirPreviewDTO> previewList;
 
 

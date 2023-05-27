@@ -21,6 +21,6 @@ public class UserDTO {
 
     private int level;
 
-    private int exp;
+    private float exp;
 
 }

@@ -278,6 +278,8 @@ public class MemoirService {
         userMemoirDTO.setName(user.getName());
         userMemoirDTO.setMbti(user.getMbti());
         userMemoirDTO.setImgUrl(user.getImgUrl());
+        userMemoirDTO.setLevel(String.valueOf(user.getLevel()));
+        userMemoirDTO.setExp(String.valueOf(user.getExp()));
 
         List<Memoir> memoirs = memoirRepository.findByUserEmail(email);
 

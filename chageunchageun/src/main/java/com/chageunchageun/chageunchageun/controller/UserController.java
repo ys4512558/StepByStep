@@ -15,9 +15,12 @@ public class UserController {
     UserService userService;
 
     @PostMapping(value = "SignUp")
-    public void SignUp(@RequestBody UserDTO userDTO){
+    public ResponseEntity<HttpStatus> SignUp(@RequestBody UserDTO userDTO){
+        System.out.println(userDTO.getExp());
 
         userService.saveUserInfo(userDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
     @GetMapping(value = "userInfo")
@@ -28,11 +31,13 @@ public class UserController {
     }
 
     @PatchMapping(value = "userLevel/{email}")
-    public void levelUp(@PathVariable String email,
+    public ResponseEntity<HttpStatus> levelUp(@PathVariable String email,
                         @RequestParam int level,
-                        @RequestParam int exp){
+                        @RequestParam float exp){
 
         userService.levelUp(email, level, exp);
+
+        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
 
     }
 

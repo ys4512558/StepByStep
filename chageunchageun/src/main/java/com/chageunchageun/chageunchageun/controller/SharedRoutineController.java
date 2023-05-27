@@ -39,9 +39,11 @@ public class SharedRoutineController {
      * 루틴 공유 시 공유 카운트 ++
      */
     @PatchMapping(value = "shareCount/{idx}")
-    public void updateCount(@PathVariable int idx){
+    public ResponseEntity<HttpStatus> updateCount(@PathVariable int idx){
 
         sharedRoutineService.updateRoutine(idx);
+
+        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
     @GetMapping(value = "selectMbti")

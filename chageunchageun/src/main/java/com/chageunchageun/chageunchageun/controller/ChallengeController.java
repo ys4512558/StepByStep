@@ -17,10 +17,11 @@ public class ChallengeController {
     @Autowired
     ChallengeService challengeService;
     @PostMapping (value = "save")
-    public void saveChallenge(@RequestParam String email,
-                              @RequestParam String title){
+    public ResponseEntity<HttpStatus> saveChallenge(@RequestParam String email,
+                                                    @RequestParam String title){
 
         challengeService.saveChallenge(email, title);
+        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
     @GetMapping(value = "incomplete")
@@ -31,10 +32,12 @@ public class ChallengeController {
     }
 
     @PatchMapping(value = "update/{email}")
-    public void updateCompleteDate(@PathVariable String email,
-                                   @RequestParam String title){
+    public ResponseEntity<HttpStatus> updateCompleteDate(@PathVariable String email,
+                                                         @RequestParam String title){
 
         challengeService.ChallengeUpdate(email, title);
+
+        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
     @GetMapping(value = "complete")
@@ -45,10 +48,11 @@ public class ChallengeController {
     }
 
     @DeleteMapping(value = "delete/{email}/{title}")
-    public void deleteChallenge(@PathVariable String email,
-                                @PathVariable String title){
+    public ResponseEntity<HttpStatus> deleteChallenge(@PathVariable String email,
+                                                      @PathVariable String title){
 
         challengeService.DeleteChallenge(email, title);
 
+        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 }

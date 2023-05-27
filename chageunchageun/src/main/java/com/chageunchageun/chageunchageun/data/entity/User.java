@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
@@ -33,26 +32,28 @@ public class User {
     private String userPath;
 
     @Column
-    @ColumnDefault(value = "0")
+    @ColumnDefault(value = "1")
     private int level;
 
     @Column
-    @ColumnDefault(value = "0")
-    private int exp;
+    @ColumnDefault(value = "0.0")
+    private float exp;
 
-    public User(String email, String name, String imgUrl, String mbti, String userPath) {
+    public User(String email, String name, String imgUrl, String mbti, String userPath, int level, float exp) {
         this.email = email;
         this.name = name;
         this.imgUrl = imgUrl;
         this.mbti = mbti;
         this.userPath = userPath;
+        this.level = level;
+        this.exp = exp;
     }
 
     public void setLevel(int level) {
         this.level = level;
     }
 
-    public void setExp(int exp) {
+    public void setExp(float exp) {
         this.exp = exp;
     }
 
@@ -70,6 +71,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Challenge> challenges;
+
 
     public void setRoutines(List<Routine> routines) {
         this.routines = routines;

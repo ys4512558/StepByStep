@@ -26,10 +26,12 @@ public class UserService {
         String name = userDTO.getName();
         String imgUrl = userDTO.getImgUrl();
         String mbti = userDTO.getMbti();
+        int level = userDTO.getLevel();
+        float exp = userDTO.getExp();
 
         String userPath = createFolder(email);
 
-        User user = new User(email, name, imgUrl, mbti, userPath);
+        User user = new User(email, name, imgUrl, mbti, userPath, level, exp);
 
         userRepository.save(user);
     }
@@ -89,7 +91,7 @@ public class UserService {
      * @param level
      * @param exp
      */
-    public void levelUp(String email, int level, int exp){
+    public void levelUp(String email, int level, float exp){
         User user = userRepository.getReferenceById(email);
 
         user.setLevel(level);
