@@ -22,10 +22,10 @@ public class RoutineController {
      * @param routinesDTO
      * @return
      */
-    @PostMapping(value = "save")
-    public ResponseEntity<HttpStatus> saveRoutinesDTO(@RequestBody RoutinesDTO routinesDTO){
+    @PostMapping(value = "save/{email}")
+    public ResponseEntity<HttpStatus> saveRoutinesDTO(@RequestBody RoutinesDTO routinesDTO, @PathVariable("email") String email){
 
-        routineService.saveRoutineDTO(routinesDTO);
+        routineService.saveRoutineDTO(email, routinesDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }

@@ -33,6 +33,9 @@ public class Routine {
     @Column
     private String end;
 
+    @Column
+    private int like_cnt;
+
     public Routine(User user, String day, String itemName, String itemDisc, String start, String end) {
         this.user = user;
         this.day = day;
@@ -64,5 +67,9 @@ public class Routine {
 
     public void setEnd(String end) {
         this.end = end;
+    }
+
+    public void setLike_cnt(int like_cnt) {
+        this.like_cnt = like_cnt;
     }
 }

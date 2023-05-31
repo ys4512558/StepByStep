@@ -71,8 +71,19 @@ public class RoutineService {
         }
     }
 
-    public void saveRoutineDTO(RoutinesDTO routinesDTO){
-        String email = routinesDTO.getEmail();
+    public void saveRoutineDTO(String emailParam, RoutinesDTO routinesDTO){
+
+        System.out.println(routinesDTO);
+        System.out.println(routinesDTO.getDay());
+
+        for(RoutineDTO routineDTO : routinesDTO.getRoutines()){
+            System.out.println(routineDTO.getItemName());
+            System.out.println(routineDTO.getItemDisc());
+            System.out.println(routineDTO.getStart());
+            System.out.println(routineDTO.getEnd());
+        }
+
+        String email = emailParam;
         String day = routinesDTO.getDay();
         User user = userRepository.getReferenceById(email);
 
@@ -121,7 +132,6 @@ public class RoutineService {
 
         RoutinesDTO routinesDTO = new RoutinesDTO();
         routinesDTO.setRoutines(routineDTOS);
-        routinesDTO.setEmail(emailParam);
         routinesDTO.setDay(dayParam);
 
         return routinesDTO;

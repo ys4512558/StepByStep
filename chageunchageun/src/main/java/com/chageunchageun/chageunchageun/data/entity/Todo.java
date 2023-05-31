@@ -27,19 +27,15 @@ public class Todo {
     private String todoDisc;
 
     @Column
-    private Boolean oneOff;
-
-    @Column
     private LocalDate startDate;
 
     @Column
     private LocalDate endDate;
 
-    public Todo(User user, String todoName, String todoDisc, Boolean oneOff, LocalDate startDate, LocalDate endDate) {
+    public Todo(User user, String todoName, String todoDisc , LocalDate startDate, LocalDate endDate) {
         this.user = user;
         this.todoName = todoName;
         this.todoDisc = todoDisc;
-        this.oneOff = oneOff;
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -50,10 +46,6 @@ public class Todo {
 
     public void setTodoDisc(String todoDisc) {
         this.todoDisc = todoDisc;
-    }
-
-    public void setOneOff(Boolean oneOff) {
-        this.oneOff = oneOff;
     }
 
     public void setStartDate(LocalDate startDate) {

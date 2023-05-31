@@ -64,9 +64,6 @@ public class User {
     private List<Todo> todos;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<SharedRoutine> sharedRoutines;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Memoir> memoirs;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -79,10 +76,6 @@ public class User {
 
     public void setTodos(List<Todo> todos) {
         this.todos = todos;
-    }
-
-    public void setSharedRoutines(List<SharedRoutine> sharedRoutines) {
-        this.sharedRoutines = sharedRoutines;
     }
 
     public void setMemoirs(List<Memoir> memoirs) {

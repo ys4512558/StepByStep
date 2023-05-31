@@ -17,5 +17,4 @@ public class TodoDTO {
     private String todo_disc;
     private LocalDate end_date;
     private LocalDate start_date;
-    private Boolean one_dff;
 }

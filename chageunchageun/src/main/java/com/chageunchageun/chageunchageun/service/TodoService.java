@@ -2,7 +2,6 @@ package com.chageunchageun.chageunchageun.service;
 
 import com.chageunchageun.chageunchageun.data.dto.Todo.DeleteTodoDTO;
 import com.chageunchageun.chageunchageun.data.dto.Todo.TodoDTO;
-import com.chageunchageun.chageunchageun.data.dto.Todo.TodosDTO;
 import com.chageunchageun.chageunchageun.data.dto.Todo.UpdateTodoDTO;
 import com.chageunchageun.chageunchageun.data.entity.Todo;
 import com.chageunchageun.chageunchageun.data.entity.User;
@@ -69,20 +68,16 @@ public class TodoService {
      * Json으로 파싱 후 DB에 저장
      * @param todosDTO
      */
-    public void saveTodo(TodosDTO todosDTO){
+    public void saveTodo(List<TodoDTO> todosDTO, String email){
 
-        String email = todosDTO.getEmail();
         User user = userRepository.getReferenceById(email);
-
-        List<TodoDTO> todoDTOS = todosDTO.getTodos();
 
         List<Todo> todos = new ArrayList<>();
 
-        for(TodoDTO todoDTO : todoDTOS) {
+        for(TodoDTO todoDTO : todosDTO) {
             Todo todo = new Todo(user,
                     todoDTO.getTodo_name(),
                     todoDTO.getTodo_disc(),
-                    todoDTO.getOne_dff(),
                     todoDTO.getStart_date(),
                     todoDTO.getEnd_date());
 
@@ -106,7 +101,6 @@ public class TodoService {
 
             todo.setTodoName(updateTodoDTO.getTodo_nameRp());
             todo.setTodoDisc(updateTodoDTO.getTodo_discRp());
-            todo.setOneOff(updateTodoDTO.getOne_off());
             todo.setStartDate(updateTodoDTO.getStart_date());
             todo.setEndDate(updateTodoDTO.getEnd_date());
 
@@ -125,7 +119,7 @@ public class TodoService {
      * @return
      */
 
-    public TodosDTO selectTodo(String emailParam, LocalDate dateParam){
+    public List<TodoDTO> selectTodo(String emailParam, LocalDate dateParam){
 
         List<Todo> todos = todoRepository.findByUserEmailAndStartDateLessThanEqualAndEndDateGreaterThanEqual(emailParam, dateParam, dateParam);
 
@@ -138,16 +132,11 @@ public class TodoService {
             todoDTO.setTodo_disc(todo.getTodoDisc());
             todoDTO.setStart_date(todo.getStartDate());
             todoDTO.setEnd_date(todo.getEndDate());
-            todoDTO.setOne_dff(todo.getOneOff());
 
             todoDTOS.add(todoDTO);
         }
 
-        TodosDTO todosDTO = new TodosDTO();
-        todosDTO.setTodos(todoDTOS);
-        todosDTO.setEmail(emailParam);
-
-        return todosDTO;
+        return todoDTOS;
     }
 
     public void completeTodo(String email, DeleteTodoDTO deleteTodoDTO){

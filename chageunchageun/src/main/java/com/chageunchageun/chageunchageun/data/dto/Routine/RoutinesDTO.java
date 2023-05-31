@@ -19,7 +19,5 @@ public class RoutinesDTO {
      */
     private List<RoutineDTO> routines;
 
-    private String email;
-
     private String day;
 }

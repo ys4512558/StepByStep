@@ -1,7 +1,7 @@
 package com.chageunchageun.chageunchageun.controller;
 
 import com.chageunchageun.chageunchageun.data.dto.Todo.DeleteTodoDTO;
-import com.chageunchageun.chageunchageun.data.dto.Todo.TodosDTO;
+import com.chageunchageun.chageunchageun.data.dto.Todo.TodoDTO;
 import com.chageunchageun.chageunchageun.data.dto.Todo.UpdateTodoDTO;
 import com.chageunchageun.chageunchageun.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/todo/")
@@ -23,18 +24,21 @@ public class TodoController {
 
         todoService.saveTodo(todos);
     }*/
-    @PostMapping(value = "save")
-    public void saveTodos(@RequestBody TodosDTO todos) {
+    @PostMapping(value = "save/{email}")
+    public ResponseEntity<HttpStatus> saveTodos(@RequestBody List<TodoDTO> todoDTOS, @PathVariable("email") String email) {
 
-        todoService.saveTodo(todos);
+        todoService.saveTodo(todoDTOS, email);
+
+        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
     @PutMapping(value = "update/{email}")
-    public void updateTodo(@PathVariable String email,
+    public ResponseEntity<HttpStatus> updateTodo(@PathVariable String email,
                            @RequestBody UpdateTodoDTO updateTodoDTO){
 
         todoService.updateTodo(email, updateTodoDTO);
 
+        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
 
@@ -45,16 +49,14 @@ public class TodoController {
      * @return
      */
     @GetMapping(value = "select")
-    public ResponseEntity<TodosDTO> selectTodos(
+    public ResponseEntity<List<TodoDTO>> selectTodos(
             @RequestParam String email,
             @RequestParam String date){
 
         LocalDate localDate = LocalDate.parse(date);
 
-        TodosDTO todosDTO = todoService.selectTodo(email, localDate);
-        System.out.println(todosDTO);
-
-        return ResponseEntity.status(HttpStatus.OK).body(todosDTO);
+        List<TodoDTO> todoDTOS = todoService.selectTodo(email, localDate);
+        return ResponseEntity.status(HttpStatus.OK).body(todoDTOS);
     }
 
     @DeleteMapping(value = "complete/{email}")

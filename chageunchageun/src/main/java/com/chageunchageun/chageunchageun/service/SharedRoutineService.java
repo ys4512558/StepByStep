@@ -1,20 +1,17 @@
 package com.chageunchageun.chageunchageun.service;
 
+import com.chageunchageun.chageunchageun.data.entity.Routine;
 import com.chageunchageun.chageunchageun.data.entity.User;
 import com.chageunchageun.chageunchageun.data.dto.Routine.SharedRoutineDTO;
-import com.chageunchageun.chageunchageun.data.entity.SharedRoutine;
-import com.chageunchageun.chageunchageun.data.repository.SharedRoutineRepository;
+import com.chageunchageun.chageunchageun.data.repository.RoutineRepository;
 import com.chageunchageun.chageunchageun.data.repository.UserRepository;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,43 +20,11 @@ public class SharedRoutineService {
 
 
     private final UserRepository userRepository;
-    private final SharedRoutineRepository sharedRoutineRepository;
+    private final RoutineRepository routineRepository;
     @Autowired
-    public SharedRoutineService(UserRepository userRepository, SharedRoutineRepository sharedRoutineRepository) {
+    public SharedRoutineService(UserRepository userRepository, RoutineRepository routineRepository) {
         this.userRepository = userRepository;
-        this.sharedRoutineRepository = sharedRoutineRepository;
-    }
-
-    /**
-     * 1. 공유된 루틴 DB에 저장
-     * 2. 공유된 루틴을 커뮤니티에 불러올 수 있도록 전송
-     */
-
-    public void saveSharedRoutine(String sharedRoutine){
-        JSONParser parser = new JSONParser();
-
-        String email;
-        LocalDate sharedDate;
-        //공유할 루틴에 각각 다른 정보가 저장될 수 있음
-        //따라서 JsonArray 사용
-        JSONArray routines;
-
-        try {
-            JSONObject jsonObject = (JSONObject) parser.parse(sharedRoutine);
-            email = (String) jsonObject.get("email");
-            sharedDate = LocalDate.parse((String) jsonObject.get("sharedDate"), DateTimeFormatter.ISO_DATE);
-            routines = (JSONArray) jsonObject.get("sharedRoutines");
-
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-
-        List<SharedRoutine> list = parseJsonArray(routines, email,sharedDate);
-
-        //DB에 저장
-        for (SharedRoutine routine : list){
-            sharedRoutineRepository.save(routine);
-        }
+        this.routineRepository = routineRepository;
     }
 
     /**
@@ -68,6 +33,7 @@ public class SharedRoutineService {
      * @param sharedDate
      * @return
      */
+    /*
     public List<SharedRoutine> parseJsonArray(JSONArray routines, String email,LocalDate sharedDate){
 
         //JSONArray에 들어갈 내용들
@@ -112,11 +78,13 @@ public class SharedRoutineService {
             list.add(sharedRoutine);
         }
         return list;
-    }
+    }*/
 
     /**
      * 카테고리를 통해 루틴을 전송하는 메서드
      */
+
+    /*
     public List<SharedRoutineDTO> selectCategory(String category){
 
         List<SharedRoutine> sharedRoutines = sharedRoutineRepository.findByCategory(category);
@@ -150,34 +118,26 @@ public class SharedRoutineService {
         return sharedRoutineDTOS;
 
     }
+     */
 
     public List<SharedRoutineDTO> selectMbti(String mbtiParam){
 
-        List<Object[]> sharedRoutines = sharedRoutineRepository.getSharedRoutinesWithUserMbti(mbtiParam);
+        List<Object[]> sharedRoutines = routineRepository.getSharedRoutinesWithUserMbti(mbtiParam);
         List<SharedRoutineDTO> sharedRoutineDTOS = new ArrayList<SharedRoutineDTO>();
 
         for(Object[] result : sharedRoutines){
 
-            String mbti = (String) result[0];
-            String email = (String) result[1];
-            String name = (String) result[2];
-            SharedRoutine sharedRoutine = (SharedRoutine) result[3];
+            Routine routine = (Routine) result[0];
 
             SharedRoutineDTO sharedRoutineDTO = new SharedRoutineDTO();
 
             //DTO초기화
-            sharedRoutineDTO.setIdx(sharedRoutine.getIdx());
-            sharedRoutineDTO.setEmail(email);
-            sharedRoutineDTO.setMbti(mbti);
-            sharedRoutineDTO.setName(name);
-            sharedRoutineDTO.setCategory(sharedRoutine.getCategory());
-            sharedRoutineDTO.setItemName(sharedRoutine.getItemName());
-            sharedRoutineDTO.setItemDisc(sharedRoutine.getItemDisc());
-            sharedRoutineDTO.setItemExplain(sharedRoutine.getItemExplain());
-            sharedRoutineDTO.setStart(sharedRoutine.getStart());
-            sharedRoutineDTO.setEnd(sharedRoutine.getEnd());
-            sharedRoutineDTO.setCount(sharedRoutine.getCount());
-            sharedRoutineDTO.setSharedDate(sharedRoutine.getSharedDate());
+            sharedRoutineDTO.setIdx(routine.getIdx());
+            sharedRoutineDTO.setItemName(routine.getItemName());
+            sharedRoutineDTO.setItemDisc(routine.getItemDisc());
+            sharedRoutineDTO.setStart(routine.getStart());
+            sharedRoutineDTO.setEnd(routine.getEnd());
+            sharedRoutineDTO.setLike_cnt(routine.getLike_cnt());
 
             sharedRoutineDTOS.add(sharedRoutineDTO);
         }
@@ -191,11 +151,11 @@ public class SharedRoutineService {
      */
     @Transactional
     public void updateRoutine(Integer idx) {
-        SharedRoutine sharedRoutine = sharedRoutineRepository.findById(idx).orElseThrow(
+        Routine routine = routineRepository.findById(idx).orElseThrow(
                 ()-> new IllegalArgumentException("수정 실패"));
-        int cnt = sharedRoutine.getCount() + 1;
-        sharedRoutine.setCount(cnt);
+        int cnt = routine.getLike_cnt() + 1;
+        routine.setLike_cnt(cnt);
 
-        sharedRoutineRepository.save(sharedRoutine);
+        routineRepository.save(routine);
     }
 }

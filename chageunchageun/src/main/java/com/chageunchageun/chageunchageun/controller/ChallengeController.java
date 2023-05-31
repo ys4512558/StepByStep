@@ -31,9 +31,9 @@ public class ChallengeController {
         return ResponseEntity.status(HttpStatus.OK).body(challengeDTOList);
     }
 
-    @PatchMapping(value = "update/{email}")
-    public ResponseEntity<HttpStatus> updateCompleteDate(@PathVariable String email,
-                                                         @RequestParam String title){
+    @PatchMapping(value = "update/{email}/{title}")
+    public ResponseEntity<HttpStatus> updateCompleteDate(@PathVariable("email") String email,
+                                                         @PathVariable("title") String title){
 
         challengeService.ChallengeUpdate(email, title);
 

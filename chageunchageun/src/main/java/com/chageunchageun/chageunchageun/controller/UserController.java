@@ -2,6 +2,7 @@ package com.chageunchageun.chageunchageun.controller;
 
 import com.chageunchageun.chageunchageun.data.dto.User.UserDTO;
 import com.chageunchageun.chageunchageun.service.UserService;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,6 @@ public class UserController {
 
     @PostMapping(value = "SignUp")
     public ResponseEntity<HttpStatus> SignUp(@RequestBody UserDTO userDTO){
-        System.out.println(userDTO.getExp());
 
         userService.saveUserInfo(userDTO);
 
@@ -32,10 +32,10 @@ public class UserController {
 
     @PatchMapping(value = "userLevel/{email}")
     public ResponseEntity<HttpStatus> levelUp(@PathVariable String email,
-                        @RequestParam int level,
-                        @RequestParam float exp){
+                        @RequestBody String levelExp) throws ParseException {
 
-        userService.levelUp(email, level, exp);
+
+        userService.levelUp(email, levelExp);
 
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
 

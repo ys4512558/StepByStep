@@ -2,7 +2,7 @@ package com.chageunchageun.chageunchageun;
 
 import com.chageunchageun.chageunchageun.data.entity.Memoir;
 import com.chageunchageun.chageunchageun.data.entity.Routine;
-import com.chageunchageun.chageunchageun.data.entity.SharedRoutine;
+//import com.chageunchageun.chageunchageun.data.entity.SharedRoutine;
 import com.chageunchageun.chageunchageun.data.entity.User;
 import com.chageunchageun.chageunchageun.data.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;

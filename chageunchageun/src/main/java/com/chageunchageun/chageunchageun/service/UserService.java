@@ -3,10 +3,14 @@ package com.chageunchageun.chageunchageun.service;
 import com.chageunchageun.chageunchageun.data.dto.User.UserDTO;
 import com.chageunchageun.chageunchageun.data.entity.User;
 import com.chageunchageun.chageunchageun.data.repository.UserRepository;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -20,20 +24,23 @@ public class UserService {
 
 
     public void saveUserInfo(UserDTO userDTO) {
-
-
         String email = userDTO.getEmail();
-        String name = userDTO.getName();
-        String imgUrl = userDTO.getImgUrl();
-        String mbti = userDTO.getMbti();
-        int level = userDTO.getLevel();
-        float exp = userDTO.getExp();
 
-        String userPath = createFolder(email);
+        Optional<User> userOptional = userRepository.findById(email);
 
-        User user = new User(email, name, imgUrl, mbti, userPath, level, exp);
+        if(!userOptional.isPresent()){
+            String name = userDTO.getName();
+            String imgUrl = userDTO.getImgUrl();
+            String mbti = userDTO.getMbti();
+            int level = userDTO.getLevel();
+            float exp = userDTO.getExp();
 
-        userRepository.save(user);
+            String userPath = createFolder(email);
+
+            User user = new User(email, name, imgUrl, mbti, userPath, level, exp);
+
+            userRepository.save(user);
+        }
     }
 
     /**
@@ -88,14 +95,21 @@ public class UserService {
      * 이메일을 받아서
      * level과 exp를 업데이트
      * @param email
-     * @param level
-     * @param exp
      */
-    public void levelUp(String email, int level, float exp){
+    public void levelUp(String email, String levelExp) throws ParseException {//String level, String exp){
         User user = userRepository.getReferenceById(email);
+        JSONParser parser = new JSONParser();
 
-        user.setLevel(level);
-        user.setExp(exp);
+        JSONObject object = (JSONObject) parser.parse(levelExp);
+
+        String level = (String) object.get("level");
+        String exp = (String) object.get("exp");
+
+        System.out.println(level);
+        System.out.println(exp);
+
+        user.setLevel(Integer.parseInt(level));
+        user.setExp(Float.parseFloat((exp)));
 
         userRepository.save(user);
     }
