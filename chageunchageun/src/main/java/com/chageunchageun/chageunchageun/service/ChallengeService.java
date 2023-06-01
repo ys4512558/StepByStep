@@ -53,7 +53,7 @@ public class ChallengeService {
 
         User user = userRepository.getReferenceById(email);
 
-        Optional<Challenge> challengeOptional = challengeRepository.findByUserEmailAndTitle(user.getEmail(), title);
+        Optional<Challenge> challengeOptional = challengeRepository.findTopByUserEmailAndTitle(user.getEmail(), title);
 
         Challenge challenge;
 
@@ -118,7 +118,7 @@ public class ChallengeService {
 
         User user = userRepository.getReferenceById(email);
 
-        Optional<Challenge> challengeOptional = challengeRepository.findByUserEmailAndTitle(user.getEmail(), title);
+        Optional<Challenge> challengeOptional = challengeRepository.findTopByUserEmailAndTitle(user.getEmail(), title);
 
         if(challengeOptional.isPresent()){
             Challenge challenge = challengeOptional.get();

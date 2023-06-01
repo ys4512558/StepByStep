@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface TodoRepository extends JpaRepository<Todo, Integer> {
     List<Todo> findByUserEmailAndStartDateLessThanEqualAndEndDateGreaterThanEqual(String email, LocalDate startDate, LocalDate endDate);
 
-    Optional<Todo> findByUserEmailAndTodoNameAndTodoDisc(String email, String todo_name, String todo_disc);
+    Optional<Todo> findTopByUserEmailAndTodoNameAndTodoDisc(String email, String todo_name, String todo_disc);
 }

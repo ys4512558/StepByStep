@@ -2,6 +2,7 @@ package com.chageunchageun.chageunchageun.controller;
 
 import com.chageunchageun.chageunchageun.data.dto.Todo.DeleteTodoDTO;
 import com.chageunchageun.chageunchageun.data.dto.Todo.TodoDTO;
+import com.chageunchageun.chageunchageun.data.dto.Todo.UpdateDateDTO;
 import com.chageunchageun.chageunchageun.data.dto.Todo.UpdateTodoDTO;
 import com.chageunchageun.chageunchageun.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,13 @@ public class TodoController {
         todoService.completeTodo(email, deleteTodoDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
+    }
 
+    @PatchMapping(value = "next/{email}")
+    public ResponseEntity<HttpStatus> updateDateTodo(@PathVariable("email") String email, @RequestBody UpdateDateDTO updateDateDTO){
+
+        todoService.updateDateTodo(email, updateDateDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 }

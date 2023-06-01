@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class SharedRoutineService {
@@ -120,6 +121,11 @@ public class SharedRoutineService {
     }
      */
 
+    /**
+     * 해당하는 mbti의 루틴을 모두 가져오는 메소드
+     * @param mbtiParam
+     * @return
+     */
     public List<SharedRoutineDTO> selectMbti(String mbtiParam){
 
         List<Object[]> sharedRoutines = routineRepository.getSharedRoutinesWithUserMbti(mbtiParam);
@@ -144,6 +150,70 @@ public class SharedRoutineService {
 
         return sharedRoutineDTOS;
 
+    }
+
+    /**
+     * MBTI입력받아서
+     * 10개 이상 있으면 10개만 랜덤으로 루틴 리턴
+     * @param mbtiParam
+     * @return
+     */
+    public List<SharedRoutineDTO> selectSharedRoutine(String mbtiParam){
+        List<Integer> sharedIdx = routineRepository.getIdxWithUserMbti(mbtiParam);
+
+        List<SharedRoutineDTO> sharedRoutineDTOS = new ArrayList<SharedRoutineDTO>();
+
+        Random random = new Random();
+        List<Integer> randIdx = new ArrayList<>();
+
+        int num = 0;
+        if(sharedIdx.size() >= 10){
+            num = 10;
+        }
+        else{
+            num = sharedIdx.size();
+        }
+
+        boolean check = false;
+
+        for(int i = 0; i < num; i++){
+            int randNum = random.nextInt(num);
+            check = false;
+            for(int j = 0; j < randIdx.size(); j++){
+                if(randNum == randIdx.get(j)){
+                    check = true;
+                }
+            }
+            if(!check){
+                randIdx.add(randNum);
+            }
+            else{
+                i--;
+            }
+        }
+
+        List<Routine> routines = new ArrayList<>();
+        for(int i = 0; i < num; i++){
+            int idx = sharedIdx.get(randIdx.get(i));
+            Routine routine = routineRepository.getReferenceById(idx);
+            routines.add(routine);
+        }
+
+        for(Routine routine : routines){
+            SharedRoutineDTO sharedRoutineDTO = new SharedRoutineDTO();
+
+            //DTO초기화
+            sharedRoutineDTO.setIdx(routine.getIdx());
+            sharedRoutineDTO.setItemName(routine.getItemName());
+            sharedRoutineDTO.setItemDisc(routine.getItemDisc());
+            sharedRoutineDTO.setStart(routine.getStart());
+            sharedRoutineDTO.setEnd(routine.getEnd());
+            sharedRoutineDTO.setLike_cnt(routine.getLike_cnt());
+
+            sharedRoutineDTOS.add(sharedRoutineDTO);
+        }
+
+        return sharedRoutineDTOS;
     }
     /**
      * 루틴 공유시 count++ 메서드

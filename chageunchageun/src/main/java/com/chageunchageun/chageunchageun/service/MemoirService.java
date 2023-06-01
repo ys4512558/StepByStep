@@ -67,7 +67,7 @@ public class MemoirService {
         Memoir memoir;;
         User user = userRepository.getReferenceById(email);
 
-        Optional<Memoir> memoirOptional = memoirRepository.findByUserEmailAndMemoirDate(user.getEmail(), date);
+        Optional<Memoir> memoirOptional = memoirRepository.findTopByUserEmailAndMemoirDate(user.getEmail(), date);
 
         if(memoirOptional.isPresent()){
             //DB에 값이 있을 때
@@ -162,7 +162,7 @@ public class MemoirService {
         User user = userRepository.getReferenceById(email);
 
         Memoir memoir = new Memoir();
-        Optional<Memoir> memoirOptional = memoirRepository.findByUserEmailAndMemoirDate(user.getEmail(), date);
+        Optional<Memoir> memoirOptional = memoirRepository.findTopByUserEmailAndMemoirDate(user.getEmail(), date);
 
         if(memoirOptional.isPresent()){
             //DB에 값이 있을 때
@@ -237,7 +237,7 @@ public class MemoirService {
     public MemoirDTO selectMemoir(String email, LocalDate date){
 
         Memoir memoir;
-        Optional<Memoir> memoirOptional = memoirRepository.findByUserEmailAndMemoirDate(email, date);
+        Optional<Memoir> memoirOptional = memoirRepository.findTopByUserEmailAndMemoirDate(email, date);
 
         MemoirDTO memoirDTO = new MemoirDTO();
 
@@ -287,7 +287,7 @@ public class MemoirService {
         for(Memoir memoir : memoirs){
             MemoirPreviewDTO memoirPreviewDTO = new MemoirPreviewDTO();
             memoirPreviewDTO.setMemoirDate(memoir.getMemoirDate());
-            Optional<MemoirImg> memoirImg = memoirImgRepository.findByImgUrlContains(String.valueOf(memoir.getMemoirDate()));
+            Optional<MemoirImg> memoirImg = memoirImgRepository.findTopByImgUrlContains(String.valueOf(memoir.getMemoirDate()));
 
             if(memoirImg.isPresent()){
                 memoirPreviewDTO.setPreviewImg(memoirImg.get().getImgUrl());

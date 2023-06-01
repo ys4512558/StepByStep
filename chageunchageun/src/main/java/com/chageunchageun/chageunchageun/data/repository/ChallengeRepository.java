@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ChallengeRepository extends JpaRepository<Challenge, Integer> {
 
-    Optional<Challenge> findByUserEmailAndTitle(String email, String title);
+    Optional<Challenge> findTopByUserEmailAndTitle(String email, String title);
     List<Challenge> findByUserEmailAndCompleteDateIsNotNullOrderByCompleteDateDesc(String email);
     List<Challenge> findByUserEmailAndCompleteDateIsNull(String email);
 

@@ -12,22 +12,10 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateTodoDTO {
-
+public class UpdateDateDTO {
     private String todo_name;
 
     private String todo_disc;
 
-    private LocalDate end_date;
-
-    private LocalDate start_date;
-
-    private String todo_nameRp;
-
-    private String todo_discRp;
-
     private LocalDate end_dateRp;
-
-    private LocalDate start_dateRp;
-
 }

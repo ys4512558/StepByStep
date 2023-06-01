@@ -105,9 +105,6 @@ public class UserService {
         String level = (String) object.get("level");
         String exp = (String) object.get("exp");
 
-        System.out.println(level);
-        System.out.println(exp);
-
         user.setLevel(Integer.parseInt(level));
         user.setExp(Float.parseFloat((exp)));
 

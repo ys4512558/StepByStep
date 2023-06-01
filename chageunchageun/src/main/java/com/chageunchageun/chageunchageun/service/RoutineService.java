@@ -150,7 +150,7 @@ public class RoutineService {
         String item_disc = updateRoutine.getItem_disc();
         String day = updateRoutine.getDay();
 
-        Optional<Routine> routineOptionaline = routineRepository.findByUserEmailAndItemNameAndItemDiscAndDay(user.getEmail(), item_name, item_disc, day);
+        Optional<Routine> routineOptionaline = routineRepository.findTopByUserEmailAndItemNameAndItemDiscAndDay(user.getEmail(), item_name, item_disc, day);
         Routine routine = new Routine();
 
         if(routineOptionaline.isPresent()){
@@ -173,7 +173,7 @@ public class RoutineService {
         String item_disc = deleteRoutineDTO.getItem_disc();
         String day = deleteRoutineDTO.getDay();
 
-        Optional<Routine> routineOptional = routineRepository.findByUserEmailAndItemNameAndItemDiscAndDay(user.getEmail(),
+        Optional<Routine> routineOptional = routineRepository.findTopByUserEmailAndItemNameAndItemDiscAndDay(user.getEmail(),
                 item_name, item_disc, day);
 
         if (routineOptional.isPresent()) {
@@ -290,7 +290,7 @@ public class RoutineService {
             throw new RuntimeException(e);
         }
 
-        Optional<Routine> routineOptionaline = routineRepository.findByUserEmailAndItemNameAndItemDiscAndDay(email, item_name, item_disc, day);
+        Optional<Routine> routineOptionaline = routineRepository.findTopByUserEmailAndItemNameAndItemDiscAndDay(email, item_name, item_disc, day);
 
         Routine routine = new Routine();
 

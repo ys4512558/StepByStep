@@ -18,9 +18,14 @@ public interface RoutineRepository extends JpaRepository<Routine, Integer> {
      */
     List<Routine> findByUserEmailAndDay(String email, String day);
 
-    Optional<Routine> findByUserEmailAndItemNameAndItemDiscAndDay(String email, String item_name, String item_disc, String day);
+    Optional<Routine> findTopByUserEmailAndItemNameAndItemDiscAndDay(String email, String item_name, String item_disc, String day);
 
     //@Query(value = "SELECT u.mbti, u.email, u.name, r FROM User as u join Routine as r on u.email = r.user.email where u.mbti = :mbti")
     @Query(value = "SELECT r FROM User as u join Routine as r on u.email = r.user.email where u.mbti = :mbti")
     List<Object[]> getSharedRoutinesWithUserMbti(@Param(value = "mbti") String mbti);
+
+    @Query(value = "SELECT r.idx FROM User as u join Routine as r on u.email = r.user.email where u.mbti = :mbti")
+    List<Integer> getIdxWithUserMbti(@Param(value = "mbti") String mbti);
+
+
 }

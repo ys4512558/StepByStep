@@ -55,7 +55,7 @@ public class SharedRoutineController {
 
     @GetMapping(value = "selectMbti")
     public ResponseEntity<List<SharedRoutineDTO>> selectMbti(@RequestParam String mbti){
-        List<SharedRoutineDTO> sharedRoutineDTOS = sharedRoutineService.selectMbti(mbti);
+        List<SharedRoutineDTO> sharedRoutineDTOS = sharedRoutineService.selectSharedRoutine(mbti);
 
         return ResponseEntity.status(HttpStatus.OK).body(sharedRoutineDTOS);
     }

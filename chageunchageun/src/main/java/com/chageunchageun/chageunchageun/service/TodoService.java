@@ -3,6 +3,7 @@ package com.chageunchageun.chageunchageun.service;
 import com.chageunchageun.chageunchageun.data.dto.Todo.DeleteTodoDTO;
 import com.chageunchageun.chageunchageun.data.dto.Todo.TodoDTO;
 import com.chageunchageun.chageunchageun.data.dto.Todo.UpdateTodoDTO;
+import com.chageunchageun.chageunchageun.data.dto.Todo.UpdateDateDTO;
 import com.chageunchageun.chageunchageun.data.entity.Todo;
 import com.chageunchageun.chageunchageun.data.entity.User;
 import com.chageunchageun.chageunchageun.data.repository.TodoRepository;
@@ -93,7 +94,7 @@ public class TodoService {
         String todo_name = updateTodoDTO.getTodo_name();
         String todo_disc = updateTodoDTO.getTodo_disc();
 
-        Optional<Todo> todoOptional = todoRepository.findByUserEmailAndTodoNameAndTodoDisc(user.getEmail(),
+        Optional<Todo> todoOptional = todoRepository.findTopByUserEmailAndTodoNameAndTodoDisc(user.getEmail(),
                 todo_name, todo_disc);
 
         if(todoOptional.isPresent()){
@@ -146,13 +147,28 @@ public class TodoService {
         String todo_name = deleteTodoDTO.getTodo_name();
         String todo_disc = deleteTodoDTO.getTodo_disc();
 
-        Optional<Todo> todoOptional = todoRepository.findByUserEmailAndTodoNameAndTodoDisc(user.getEmail(), todo_name, todo_disc);
+        Optional<Todo> todoOptional = todoRepository.findTopByUserEmailAndTodoNameAndTodoDisc(user.getEmail(), todo_name, todo_disc);
 
         if(todoOptional.isPresent()){
             Todo todo = todoOptional.get();
 
             todoRepository.delete(todo);
         }
+    }
 
+    public void updateDateTodo(String email, UpdateDateDTO updateDateDTO){
+        User user = userRepository.getReferenceById(email);
+
+        String todo_name = updateDateDTO.getTodo_name();
+        String todo_disc = updateDateDTO.getTodo_disc();
+
+        Optional<Todo> todoOptional = todoRepository.findTopByUserEmailAndTodoNameAndTodoDisc(user.getEmail(), todo_name, todo_disc);
+
+        if(todoOptional.isPresent()){
+            Todo todo = todoOptional.get();
+            todo.setEndDate(updateDateDTO.getEnd_dateRp());
+
+            todoRepository.save(todo);
+        }
     }
 }

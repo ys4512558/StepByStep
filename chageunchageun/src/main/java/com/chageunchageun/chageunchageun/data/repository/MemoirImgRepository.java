@@ -10,7 +10,7 @@ public interface MemoirImgRepository extends JpaRepository<MemoirImg, Integer> {
 
     List<MemoirImg> findByMemoirIdx(Integer memoir_idx);
 
-    Optional<MemoirImg> findByImgUrlContains(String date);
+    Optional<MemoirImg> findTopByImgUrlContains(String date);
 
 
 }
