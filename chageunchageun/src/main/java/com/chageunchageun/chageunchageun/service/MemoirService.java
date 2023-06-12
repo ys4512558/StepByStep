@@ -103,7 +103,10 @@ public class MemoirService {
             //System.out.println("file.getOriginalFilename = " + filename);
             fullPath = saveDir + "/" +filename;
             try {
-                file.transferTo(new File(fullPath));
+                File temp = new File(fullPath);
+                if(!temp.exists()){
+                    file.transferTo(new File(fullPath));
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

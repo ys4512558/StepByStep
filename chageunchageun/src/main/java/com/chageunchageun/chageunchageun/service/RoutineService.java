@@ -47,7 +47,7 @@ public class RoutineService {
 
         if (!file.isEmpty()) {
             String filename = file.getOriginalFilename();
-            System.out.println("file.getOriginalFilename = " + filename);
+            //System.out.println("file.getOriginalFilename = " + filename);
             String fullPath = uploadDir + filename;
             try {
                 file.transferTo(new File(fullPath));
@@ -73,15 +73,6 @@ public class RoutineService {
 
     public void saveRoutineDTO(String emailParam, RoutinesDTO routinesDTO){
 
-        System.out.println(routinesDTO);
-        System.out.println(routinesDTO.getDay());
-
-        for(RoutineDTO routineDTO : routinesDTO.getRoutines()){
-            System.out.println(routineDTO.getItemName());
-            System.out.println(routineDTO.getItemDisc());
-            System.out.println(routineDTO.getStart());
-            System.out.println(routineDTO.getEnd());
-        }
 
         String email = emailParam;
         String day = routinesDTO.getDay();

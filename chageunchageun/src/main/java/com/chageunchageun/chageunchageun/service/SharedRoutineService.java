@@ -158,9 +158,12 @@ public class SharedRoutineService {
      * @param mbtiParam
      * @return
      */
-    public List<SharedRoutineDTO> selectSharedRoutine(String mbtiParam){
-        List<Integer> sharedIdx = routineRepository.getIdxWithUserMbti(mbtiParam);
+    public List<SharedRoutineDTO> selectSharedRoutine(String mbtiParam, String emailParam){
+        //List<Integer> sharedIdx = routineRepository.getIdxWithUserMbti(mbtiParam);
+        List<Integer> sharedIdx = routineRepository.getIdxWithUserMbtiAndEmail(mbtiParam, emailParam);
 
+        System.out.println("mbti = " + mbtiParam);
+        System.out.println("email = " + emailParam);
         List<SharedRoutineDTO> sharedRoutineDTOS = new ArrayList<SharedRoutineDTO>();
 
         Random random = new Random();
@@ -177,7 +180,7 @@ public class SharedRoutineService {
         boolean check = false;
 
         for(int i = 0; i < num; i++){
-            int randNum = random.nextInt(num);
+            int randNum = random.nextInt(sharedIdx.size());
             check = false;
             for(int j = 0; j < randIdx.size(); j++){
                 if(randNum == randIdx.get(j)){
@@ -213,6 +216,14 @@ public class SharedRoutineService {
             sharedRoutineDTOS.add(sharedRoutineDTO);
         }
 
+        for(SharedRoutineDTO s : sharedRoutineDTOS){
+            System.out.println(s.getIdx());
+            System.out.println(s.getItemName());
+            System.out.println(s.getItemDisc());
+            System.out.println(s.getStart());
+            System.out.println(s.getEnd());
+        }
+
         return sharedRoutineDTOS;
     }
     /**
@@ -220,10 +231,20 @@ public class SharedRoutineService {
      * @param idx
      */
     @Transactional
-    public void updateRoutine(Integer idx) {
+    public void plusLikeRoutine(Integer idx) {
         Routine routine = routineRepository.findById(idx).orElseThrow(
                 ()-> new IllegalArgumentException("수정 실패"));
         int cnt = routine.getLike_cnt() + 1;
+        routine.setLike_cnt(cnt);
+
+        routineRepository.save(routine);
+    }
+
+    @Transactional
+    public void minusLikeRoutine(Integer idx) {
+        Routine routine = routineRepository.findById(idx).orElseThrow(
+                ()-> new IllegalArgumentException("수정 실패"));
+        int cnt = routine.getLike_cnt() - 1;
         routine.setLike_cnt(cnt);
 
         routineRepository.save(routine);

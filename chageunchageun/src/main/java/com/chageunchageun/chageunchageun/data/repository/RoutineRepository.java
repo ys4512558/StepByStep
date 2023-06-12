@@ -27,5 +27,8 @@ public interface RoutineRepository extends JpaRepository<Routine, Integer> {
     @Query(value = "SELECT r.idx FROM User as u join Routine as r on u.email = r.user.email where u.mbti = :mbti")
     List<Integer> getIdxWithUserMbti(@Param(value = "mbti") String mbti);
 
+    @Query(value = "SELECT r.idx FROM User as u join Routine as r on u.email = r.user.email where u.mbti = :mbti and u.email != :email")
+    List<Integer> getIdxWithUserMbtiAndEmail(@Param(value = "mbti") String mbti, @Param(value = "email") String email);
+
 
 }

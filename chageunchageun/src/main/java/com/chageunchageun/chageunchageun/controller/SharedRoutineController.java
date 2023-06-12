@@ -45,17 +45,26 @@ public class SharedRoutineController {
     /**
      * 루틴 공유 시 공유 카운트 ++
      */
-    @PatchMapping(value = "shareCount/{idx}")
-    public ResponseEntity<HttpStatus> updateLike(@PathVariable int idx){
+    @PatchMapping(value = "shareCountPlus/{idx}")
+    public ResponseEntity<HttpStatus> plusLike(@PathVariable int idx){
 
-        sharedRoutineService.updateRoutine(idx);
+        sharedRoutineService.plusLikeRoutine(idx);
 
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
+    @PatchMapping(value = "shareCountMinus/{idx}")
+    public ResponseEntity<HttpStatus> minusLike(@PathVariable int idx){
+
+        sharedRoutineService.minusLikeRoutine(idx);
+
+        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
+    }
+
+
     @GetMapping(value = "selectMbti")
-    public ResponseEntity<List<SharedRoutineDTO>> selectMbti(@RequestParam String mbti){
-        List<SharedRoutineDTO> sharedRoutineDTOS = sharedRoutineService.selectSharedRoutine(mbti);
+    public ResponseEntity<List<SharedRoutineDTO>> selectMbti(@RequestParam String mbti, @RequestParam String email){
+        List<SharedRoutineDTO> sharedRoutineDTOS = sharedRoutineService.selectSharedRoutine(mbti, email);
 
         return ResponseEntity.status(HttpStatus.OK).body(sharedRoutineDTOS);
     }
