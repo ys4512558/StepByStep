@@ -18,8 +18,6 @@ import java.util.Random;
 
 @Service
 public class SharedRoutineService {
-
-
     private final UserRepository userRepository;
     private final RoutineRepository routineRepository;
     @Autowired
@@ -27,59 +25,6 @@ public class SharedRoutineService {
         this.userRepository = userRepository;
         this.routineRepository = routineRepository;
     }
-
-    /**
-     * JsonArray를 파싱한 후 리스트로 리턴
-     * @param routines
-     * @param sharedDate
-     * @return
-     */
-    /*
-    public List<SharedRoutine> parseJsonArray(JSONArray routines, String email,LocalDate sharedDate){
-
-        //JSONArray에 들어갈 내용들
-        String category;
-        String itemName;
-        String itemDisc;
-        String itemExplain;
-        String start;
-        String end;
-        int count;
-        
-        List<SharedRoutine> list = new ArrayList<SharedRoutine>();
-        for(Object object : routines){
-            JSONObject routineObject = (JSONObject) object;
-
-            //유저의 정보 가져오기
-            User user = userRepository.getReferenceById(email);
-
-            category = (String) routineObject.get("category");
-            itemName = (String) routineObject.get("itemName");
-            itemDisc = (String) routineObject.get("itemDisc");
-            itemExplain = (String) routineObject.get("itemExplain");
-            start = (String) routineObject.get("start");
-            end = (String) routineObject.get("end");
-
-            //클라이언트한테 받을 때 count가 필요한가?
-            count =  Integer.parseInt((String) routineObject.get("count"));
-            
-            SharedRoutine sharedRoutine = new SharedRoutine();
-            //유저 정보(이메일)
-            sharedRoutine.setUser(user);
-
-            sharedRoutine.setCategory(category);
-            sharedRoutine.setItemName(itemName);
-            sharedRoutine.setItemDisc(itemDisc);
-            sharedRoutine.setItemExplain(itemExplain);
-            sharedRoutine.setStart(start);
-            sharedRoutine.setEnd(end);
-            sharedRoutine.setCount(count);
-            sharedRoutine.setSharedDate(sharedDate);
-            
-            list.add(sharedRoutine);
-        }
-        return list;
-    }*/
 
     /**
      * 카테고리를 통해 루틴을 전송하는 메서드
@@ -159,7 +104,6 @@ public class SharedRoutineService {
      * @return
      */
     public List<SharedRoutineDTO> selectSharedRoutine(String mbtiParam, String emailParam){
-        //List<Integer> sharedIdx = routineRepository.getIdxWithUserMbti(mbtiParam);
         List<Integer> sharedIdx = routineRepository.getIdxWithUserMbtiAndEmail(mbtiParam, emailParam);
 
         System.out.println("mbti = " + mbtiParam);

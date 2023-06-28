@@ -29,45 +29,9 @@ public class TodoService {
     }
 
     /**
-     * 클라이언트로부터 이미지를 받아 저장하는 메서드
-     * email을 primary 키로하여
-     */
-    public void uploadFile (String email, MultipartFile file){
-
-        final String uploadDir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/" + email + "/";
-
-        checkDir(uploadDir);
-
-        if (!file.isEmpty()) {
-            String filename = file.getOriginalFilename();
-            System.out.println("file.getOriginalFilename = " + filename);
-            String fullPath = uploadDir + filename;
-            try {
-                file.transferTo(new File(fullPath));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    //디렉토리 생성 메서드
-    public void checkDir(String path){
-        File Folder = new File(path);
-
-        if (!Folder.exists()) {
-            try{
-                Folder.mkdir();
-            }
-            catch(Exception e){
-                e.getStackTrace();
-            }
-        }
-    }
-
-    /**
-     * 문자열 Todos를 @RequestBody에서 받음
-     * Json으로 파싱 후 DB에 저장
+     * todosDTO를 통해 저장할 투두를 받아서 저장
      * @param todosDTO
+     * @param email
      */
     public void saveTodo(List<TodoDTO> todosDTO, String email){
 
@@ -87,6 +51,12 @@ public class TodoService {
         }
     }
 
+
+    /**
+     * 투두를 수정하기 위한 메소드
+     * @param email
+     * @param updateTodoDTO
+     */
     public void updateTodo(String email, UpdateTodoDTO updateTodoDTO){
 
         User user = userRepository.getReferenceById(email);
@@ -119,7 +89,6 @@ public class TodoService {
      * @param dateParam
      * @return
      */
-
     public List<TodoDTO> selectTodo(String emailParam, LocalDate dateParam){
 
         List<Todo> todos = todoRepository.findByUserEmailAndStartDateLessThanEqualAndEndDateGreaterThanEqual(emailParam, dateParam, dateParam);
@@ -140,6 +109,11 @@ public class TodoService {
         return todoDTOS;
     }
 
+    /**
+     * 투두 완료 시 삭제하기 위한 메소드
+     * @param email
+     * @param deleteTodoDTO
+     */
     public void completeTodo(String email, DeleteTodoDTO deleteTodoDTO){
 
         User user = userRepository.getReferenceById(email);
@@ -156,6 +130,12 @@ public class TodoService {
         }
     }
 
+    /**
+     * 날짜 미루기를 위한 메소드
+     * 마감 기한이 하루 증가한다.
+     * @param email
+     * @param updateDateDTO
+     */
     public void updateDateTodo(String email, UpdateDateDTO updateDateDTO){
         User user = userRepository.getReferenceById(email);
 

@@ -13,9 +13,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChallengeDTO {
-
     String title;
-
     LocalDate completeDate;
-
 }

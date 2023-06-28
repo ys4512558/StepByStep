@@ -19,12 +19,6 @@ public class TodoController {
 
     @Autowired
     private TodoService todoService;
-
-    /*@PostMapping(value = "save")
-    public void saveRoutines(@RequestBody String todos){
-
-        todoService.saveTodo(todos);
-    }*/
     @PostMapping(value = "save/{email}")
     public ResponseEntity<HttpStatus> saveTodos(@RequestBody List<TodoDTO> todoDTOS, @PathVariable("email") String email) {
 

@@ -18,7 +18,6 @@ public class RoutineController {
 
     /**
      * 루틴 저장
-     *
      * @param routinesDTO
      * @return
      */
@@ -47,6 +46,11 @@ public class RoutineController {
         return ResponseEntity.status(HttpStatus.OK).body(routinesDTO);
     }
 
+    /**
+     * 루틴 수정
+     * @param email
+     * @param updateRoutine
+     */
     @PatchMapping(value = "update/{email}")
     public void updateRoutine(@PathVariable String email,
                               @RequestBody UpdateRoutineDTO updateRoutine){
@@ -54,6 +58,12 @@ public class RoutineController {
         routineService.updateRoutine(email, updateRoutine);
     }
 
+    /**
+     * 루틴 삭제
+     * @param email
+     * @param deleteRoutineDTO
+     * @return
+     */
     @DeleteMapping(value = "delete/{email}")
     public ResponseEntity<HttpStatus> deleteRoutine(@PathVariable String email,
                                                     @RequestBody DeleteRoutineDTO deleteRoutineDTO){

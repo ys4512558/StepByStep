@@ -12,5 +12,4 @@ public class DeleteRoutineDTO {
     private String item_disc;
     private String day;
 
-
 }

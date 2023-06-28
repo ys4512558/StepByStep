@@ -21,27 +21,15 @@ public class SharedRoutineDTO {
      */
 
     private Integer idx;
-    //공유자 이메일
-    //private String email;
-    //mbti커뮤니티
-    //private String mbti;
-    //공유자의 닉네임
-    //private String name;
-    //카테고리(운동, 일상, 공부, 기타)
-    //private String category;
     //루틴 이름
     private String itemName;
     //루틴 내용
     private String itemDisc;
-    //루틴 설명
-    //private String itemExplain;
     //시작 시간
     private String start;
     //종료 시간
     private String end;
     //공유 수
     private int like_cnt;
-    //공유 시간
-    //private LocalDate sharedDate;
 
 }

@@ -86,12 +86,6 @@ public class MemoirService {
     //회고록에 넣은 이미지를 저장하는 메서드
     public String saveMemoirImg (String email, MultipartFile file, LocalDate date){
 
-        //final String saveDir = "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/UserFile/" + email + "/Memoir/" + date + "/";
-        //노트북 경로
-        /*final String saveDir =
-                "C:/Users/ys451/OneDrive/바탕 화면/종합설계/차근차근/chageunchageun/src/main/resources/User/" + email + "/Memoir/" + date; //+ "/";
-        */
-
         final String saveDir =
                 "C:/Users/ys451/OneDrive/바탕 화면/4학년 폴더/차근차근/chageunchageun/chageunchageun/src/main/resources/User/" + email + "/Memoir/" + date;
 
@@ -100,7 +94,6 @@ public class MemoirService {
         String filename = "";
         if (!file.isEmpty()) {
             filename = file.getOriginalFilename();
-            //System.out.println("file.getOriginalFilename = " + filename);
             fullPath = saveDir + "/" +filename;
             try {
                 File temp = new File(fullPath);
@@ -152,11 +145,6 @@ public class MemoirService {
             title = (String) jsonObject.get("title");
             mood = (String) jsonObject.get("mood");
             comment = (String) jsonObject.get("comment");
-            System.out.println(email);
-            System.out.println(date);
-            System.out.println(title);
-            System.out.println(mood);
-            System.out.println(comment);
 
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -187,45 +175,6 @@ public class MemoirService {
         memoirRepository.save(memoir);
         memoirImgRepository.save(memoirImg);
     }
-
-    /*
-    public void saveContent(MemoirContentDTO memoirContent,
-                            MultipartFile image){
-
-        String email = memoirContent.getEmail();
-        LocalDate date = memoirContent.getDate();
-        String title = memoirContent.getTitle();
-        String mood = memoirContent.getMood();
-        String comment = memoirContent.getComment();
-
-        Memoir memoir;
-        Optional<Memoir> memoirOptional = memoirRepository.findByUserEmailAndMemoirDate(email, date);
-
-        if(memoirOptional.isPresent()){
-            //DB에 값이 있을 때
-            memoir = memoirOptional.get();
-        }
-        else {
-            User user = userRepository.getReferenceById(email);
-            memoir = new Memoir(user, date);
-            memoirRepository.save(memoir);
-        }
-
-        memoir.setTitle(title);
-        memoir.setComment(comment);
-        memoir.setMood(mood);
-        memoir.setComment(comment);
-
-        String fileName = saveMemoirImg(email, image, date);
-
-        MemoirImg memoirImg = new MemoirImg(memoir, fileName);
-
-        memoirRepository.save(memoir);
-        memoirImgRepository.save(memoirImg);
-    }
-
-     */
-
 
     /**
      * 회고록 불러오는 로직

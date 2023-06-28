@@ -17,7 +17,7 @@ public class SharedRoutineController {
     SharedRoutineService sharedRoutineService;
 
     /**
-     * 삭제 예정
+     * 공유하기 버튼을 통해 루틴을 선택하여 공유할 수 있도록 하기 위함
      * @param routine
      * @return
      */
@@ -32,7 +32,6 @@ public class SharedRoutineController {
 
     /**
      * 클라이언트로부터 카테고리를 받아 전송하는 컨트롤러
-     * 삭제 예정
      */
     /*
     @GetMapping(value = "selectCategory")
